@@ -1,23 +1,64 @@
 import 'dart:core';
 
+final String tableLabour = 'labours';
 
-final String tableLabour = '';
-/*class Labours{
+class LabourFields {
+  static final String id = "id";
+  static final String purpose = "purpose";
+  static final String name = "name";
+  static final String cnic = "cnic";
+  static final String father_name = "father_name";
+  static final String doa = "doa";
+  static final String cell_no_primary = "cell_no_primary";
+  static final String cell_no_secondary = "cell_no_secondary";
+  static final String gender = "gender";
+  static final String married = "married";
+  static final String eobi = "eobi";
+  static final String eobi_no = "eobi_no";
+  static final String work_from = "work_from";
+  static final String work_type = "work_type";
+  static final String perm_address = "perm_address";
+  static final String perm_district = "perm_district";
+  static final String createTime = "createTime";
+
+  static final List<String> values = [
+    id,
+    purpose,
+    name,
+    cnic,
+    father_name,
+    doa,
+    cell_no_primary,
+    cell_no_secondary,
+    gender,
+    married,
+    eobi,
+    eobi_no,
+    work_from,
+    work_type,
+    perm_address,
+    perm_district,
+    createTime
+  ];
+}
+
+class Labours {
   final int status;
   final String message;
   final List<Labour> data;
 
-  Labours({required this.status,required this.message, required this.data});
+  Labours({required this.status, required this.message, required this.data});
 
-  factory Labours.fromJson(Labour labourJson){
+  factory Labours.fromJson(Labour labourJson) {
     List list = labourJson as List;
-    List<Labour> labours = list.map((e){return Labour.fromJson(e);}).toList();
-    return Labours(status:200,message:"Labours",data:labours);
+    List<Labour> labours = list.map((e) {
+      return Labour.fromJson(e);
+    }).toList();
+    return Labours(status: 200, message: "Labours", data: labours);
   }
-
 }
 
-class Labour{
+class Labour {
   late int? id;
   late String? purpose;
   late String? name;
@@ -27,8 +68,6 @@ class Labour{
   late String? cell_no_primary;
   late String? cell_no_secondary;
   late String? gender;
-  late int? domicile_district;
-  late int? district_id;
   late String? married;
   late String? eobi;
   late String? eobi_no;
@@ -36,91 +75,103 @@ class Labour{
   late int? work_type;
   late String? perm_address;
   late int? perm_district;
+  late DateTime? createTime;
 
-  Labour({
-    this.id,
-    this.purpose,
-    this.name,
-    this.cnic,
-    this.father_name,
-    this.doa,
-    this.cell_no_primary,
-    this.cell_no_secondary,
-    this.gender,
-    this.domicile_district,
-    this.district_id,
-    this.married,
-    this.eobi,
-    this.eobi_no,
-    this.work_from,
-    this.work_type,
-    this.perm_address,
-    this.perm_district
-});
+  Labour(
+      {this.id,
+      this.purpose,
+      this.name,
+      this.cnic,
+      this.father_name,
+      this.doa,
+      this.cell_no_primary,
+      this.cell_no_secondary,
+      this.gender,
+      this.married,
+      this.eobi,
+      this.eobi_no,
+      this.work_from,
+      this.work_type,
+      this.perm_address,
+      this.perm_district, this.createTime});
 
-  factory Labour.fromJson(Map<String, dynamic> json){
+  Labour copy(
+          {int? id,
+          String? purpose,
+          String? name,
+          String? cnic,
+          String? father_name,
+          DateTime? doa,
+          String? cell_no_primary,
+          String? cell_no_secondary,
+          String? gender,
+          String? married,
+          String? eobi,
+          String? eobi_no,
+          DateTime? work_from,
+          int? work_type,
+          String? perm_address,
+          int? perm_district, DateTime? createTime}) =>
+      Labour(
+          id: id ?? this.id,
+          purpose: purpose ?? this.purpose,
+          name: name ?? this.name,
+          cnic: cnic ?? this.cnic,
+          father_name: father_name ?? this.father_name,
+          doa: doa ?? this.doa,
+          cell_no_primary: cell_no_primary ?? this.cell_no_primary,
+          cell_no_secondary: cell_no_secondary ?? this.cell_no_secondary,
+          gender: gender ?? this.gender,
+          married: married ?? this.married,
+          eobi: eobi ?? this.eobi,
+          eobi_no: eobi_no ?? this.eobi_no,
+          work_from: work_from ?? this.work_from,
+          work_type: work_type ?? this.work_type,
+          perm_address: perm_address ?? this.perm_address,
+          perm_district: perm_district ?? this.perm_district,
+          createTime:createTime??this.createTime);
+
+  factory Labour.fromJson(Map<String, dynamic> json) {
     return Labour(
-        id:json["id"],
-        purpose:json["purpose"],
-        name:json["name"],
-        cnic:json["cnic"],
-        father_name:json["father_name"],
-        doa:json["doa"],
-        cell_no_primary:json["cell_no_primary"],
-        cell_no_secondary:json["cell_no_secondary"],
-        gender:json["gender"],
-        domicile_district:json["domicile_district"],
-        district_id:json["district_id"],
-        married:json["married"],
-        eobi:json["eobi"],
-        eobi_no:json["eobi_no"],
-        work_from:json["work_from"],
-        work_type:json["work_type"],
-        perm_address:json["perm_address"],
-        perm_district:json["perm_district"]
-    );
+        id: json["id"],
+        purpose: json["purpose"],
+        name: json["name"],
+        cnic: json["cnic"],
+        father_name: json["father_name"],
+        doa: json["doa"],
+        cell_no_primary: json["cell_no_primary"],
+        cell_no_secondary: json["cell_no_secondary"],
+        gender: json["gender"],
+        married: json["married"],
+        eobi: json["eobi"],
+        eobi_no: json["eobi_no"],
+        work_from: json["work_from"],
+        work_type: json["work_type"],
+        perm_address: json["perm_address"],
+        perm_district: json["perm_district"],
+        createTime: json["createTime"]);
   }
 
-  Map<dynamic, dynamic> toJson(){
-    Map<dynamic,dynamic> data = {};
-    if(id!=null)
-      data['id'] = id;
-    if(purpose!=null)
-      data['purpose'] = purpose;
-    if(name!=null)
-      data['name'] = name;
-    if(cnic!=null)
-      data['cnic'] = cnic;
-    if(father_name!=null)
-      data['father_name'] = father_name;
-    if(doa!=null)
-      data['doa'] = doa;
-    if(cell_no_primary!=null)
-      data['cell_no_primary'] = cell_no_primary;
-    if(cell_no_secondary!=null)
+  Map<String, dynamic?> toJson() {
+    Map<String, dynamic> data = {};
+    if (id != null) data['id'] = id;
+    if (purpose != null) data['purpose'] = purpose;
+    if (name != null) data['name'] = name;
+    if (cnic != null) data['cnic'] = cnic;
+    if (father_name != null) data['father_name'] = father_name;
+    if (doa != null) data['doa'] = doa?.toIso8601String();
+    if (cell_no_primary != null) data['cell_no_primary'] = cell_no_primary;
+    if (cell_no_secondary != null)
       data['cell_no_secondary'] = cell_no_secondary;
-    if(gender!=null)
-      data['gender'] = gender;
-    if(domicile_district!=null)
-      data['domicile_district'] = domicile_district;
-    if(district_id!=null)
-      data['district_id'] = district_id;
-    if(married!=null)
-      data['married'] = married;
-    if(eobi!=null)
-      data['eobi'] = eobi;
-    if(eobi_no!=null)
-      data['eobi_no'] = eobi_no;
-    if(work_from!=null)
-      data['work_from'] = work_from;
-    if(work_type!=null)
-      data['work_type'] = work_type;
-    if(perm_address!=null)
-      data['perm_address'] = perm_address;
-    if(perm_district!=null)
-      data['perm_district'] = perm_district;
+    if (gender != null) data['gender'] = gender;
+    if (married != null) data['married'] = married;
+    if (eobi != null) data['eobi'] = eobi;
+    if (eobi_no != null) data['eobi_no'] = eobi_no;
+    if (work_from != null) data['work_from'] = work_from?.toIso8601String();
+    if (work_type != null) data['work_type'] = work_type;
+    if (perm_address != null) data['perm_address'] = perm_address;
+    if (perm_district != null) data['perm_district'] = perm_district;
+    if (createTime != null) data['createTime'] = createTime;
     return data;
-
   }
-
-}*/
+}

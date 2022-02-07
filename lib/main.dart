@@ -1,5 +1,6 @@
 import 'package:cmlw_labour_registration/pages/register_labour.dart';
 import 'package:cmlw_labour_registration/layouts/partials/tile.dart';
+import 'package:cmlw_labour_registration/pages/sync.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -86,6 +87,9 @@ class _MyHomePageState extends State<MyHomePage> {
             getTile("Labours Registered: 200",()=>{}),
             getTile("Register Labour",()=>{
               Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisterLabour()))
+            }),
+            getTile("Sync",()=>{
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>const Sync()))
             })
           ],
         ),

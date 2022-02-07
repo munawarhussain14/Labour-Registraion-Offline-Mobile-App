@@ -1,0 +1,143 @@
+id,name,province
+1,Abbottabad,khyber pakhtunkhwa
+2,Bajaur,khyber pakhtunkhwa
+3,Bannu,khyber pakhtunkhwa
+4,Batagram,khyber pakhtunkhwa
+5,Buner,khyber pakhtunkhwa
+6,Charsadda,khyber pakhtunkhwa
+7,Dera Ismail Khan,khyber pakhtunkhwa
+8,Hangu,khyber pakhtunkhwa
+9,Haripur,khyber pakhtunkhwa
+10,Karak,khyber pakhtunkhwa
+11,Khyber,khyber pakhtunkhwa
+12,Kohat,khyber pakhtunkhwa
+13,Kolai-Palas,khyber pakhtunkhwa
+14,Kurram,khyber pakhtunkhwa
+15,Lakki Marwat,khyber pakhtunkhwa
+16,Lower Chitral,khyber pakhtunkhwa
+17,Lower Dir,khyber pakhtunkhwa
+18,Lower Kohistan,khyber pakhtunkhwa
+19,Malakand,khyber pakhtunkhwa
+20,Mansehra,khyber pakhtunkhwa
+21,Mardan,khyber pakhtunkhwa
+22,Mohmand,khyber pakhtunkhwa
+23,North Waziristan,khyber pakhtunkhwa
+24,Nowshera,khyber pakhtunkhwa
+25,Orakzai,khyber pakhtunkhwa
+26,Peshawar,khyber pakhtunkhwa
+27,Shangla,khyber pakhtunkhwa
+28,South Waziristan,khyber pakhtunkhwa
+29,Swabi,khyber pakhtunkhwa
+30,Swat,khyber pakhtunkhwa
+31,Tank,khyber pakhtunkhwa
+32,Tor Ghar,khyber pakhtunkhwa
+33,Upper Chitral,khyber pakhtunkhwa
+34,Upper Dir,khyber pakhtunkhwa
+35,Upper Kohistan,khyber pakhtunkhwa
+36,Awaran,balochistan
+37,Barkhan,balochistan
+38,Chagai,balochistan
+39,Dera Bugti,balochistan
+40,Gwadar,balochistan
+41,Harnai,balochistan
+42,Jafarabad,balochistan
+43,Jhal Magsi,balochistan
+44,Kachhi,balochistan
+45,Kalat,balochistan
+46,Kech,balochistan
+47,Kharan,balochistan
+48,Khuzdar,balochistan
+49,Killa Abdullah,balochistan
+50,Killa Saifullah,balochistan
+51,Kohlu,balochistan
+52,Lasbela,balochistan
+53,Lehri,balochistan
+54,Loralai,balochistan
+55,Mastung,balochistan
+56,Musakhel,balochistan
+57,Nasirabad,balochistan
+58,Nushki,balochistan
+59,Panjgur,balochistan
+60,Pishin,balochistan
+61,Quetta,balochistan
+62,Sherani,balochistan
+63,Sibi,balochistan
+64,Washuk,balochistan
+65,Zhob,balochistan
+66,Ziarat,balochistan
+67,Duki,balochistan
+68,Attock,punjab
+69,Bahawalnagar,punjab
+70,Bahawalpur,punjab
+71,Bhakkar,punjab
+72,Chakwal,punjab
+73,Chiniot,punjab
+74,Dera Ghazi Khan,punjab
+75,Faisalabad,punjab
+76,Gujranwala,punjab
+77,Gujrat,punjab
+78,Hafizabad,punjab
+79,Jhang,punjab
+80,Jhelum,punjab
+81,Kasur,punjab
+82,Khanewal,punjab
+83,Khushab,punjab
+84,Lahore,punjab
+85,Layyah,punjab
+86,Lodhran,punjab
+87,Mandi Bahauddin,punjab
+88,Mianwali,punjab
+89,Multan,punjab
+90,Muzaffargarh,punjab
+91,Narowal,punjab
+92,Nankana Sahib,punjab
+93,Okara,punjab
+94,Pakpattan,punjab
+95,Rahim Yar Khan,punjab
+96,Rajanpur,punjab
+97,Rawalpindi,punjab
+98,Sahiwal,punjab
+99,Sargodha,punjab
+100,Sheikhupura,punjab
+101,Sialkot,punjab
+102,Toba Tek Singh,punjab
+103,Vehari,punjab
+104,Badin,sindh
+105,Dadu,sindh
+106,Ghotki,sindh
+107,Hyderabad,sindh
+108,Jacobabad,sindh
+109,Jamshoro,sindh
+110,Karachi Central,sindh
+111,Karachi East,sindh
+112,Karachi South,sindh
+113,Karachi West,sindh
+114,Kashmore,sindh
+115,Khairpur,sindh
+116,Korangi,sindh
+117,Larkana,sindh
+118,Malir,sindh
+119,Matiari,sindh
+120,Mirpur Khas,sindh
+121,Naushahro Feroze,sindh
+122,Qambar Shahdadkot,sindh
+123,Sanghar,sindh
+124,Shaheed Benazir Abad,sindh
+125,Shikarpur,sindh
+126,Sujawal,sindh
+127,Sukkur,sindh
+128,Tando Allahyar,sindh
+129,Tando Muhammad Khan,sindh
+130,Tharparkar,sindh
+131,Thatta,sindh
+132,Umerkot,sindh
+133,Muzaffarabad,azad kashmir
+134,Neelum,azad kashmir
+135,Hattian,azad kashmir
+136,Bagh,azad kashmir
+137,Haveli,azad kashmir
+138,Poonch,azad kashmir
+139,Sudhnuti,azad kashmir
+140,Kotli,azad kashmir
+141,Mirpur,azad kashmir
+142,Bhimber,azad kashmir

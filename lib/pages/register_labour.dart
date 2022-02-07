@@ -56,7 +56,6 @@ class _RegisterLabourState extends State<RegisterLabour> {
                 textField("Date of Birth",doa),
                 textField("Cell Phone Primary",cell_no_primary),
                 textField("Cell Phone Secondary",cell_no_secondary),
-                textField("District",district),
                 textField("Married",married),
                 textField("EOBI",eobi),
                 textField("EOBI No",eobi_no),
