@@ -83,22 +83,56 @@ class Lease{
     );
   }
 
-  Map<dynamic, dynamic> toJson(){
-    Map<dynamic,dynamic> data = {};
+  Map<String, dynamic> toJson(){
+    Map<String,dynamic> data = {};
     if(id!=null)
       data['id'] = id;
+
     if(code!=null)
       data['code'] = code;
+
     if(parties!=null)
       data['parties'] = parties;
-    if(district!=null)
-      data['district'] = district;
+
+    if(res_office!=null)
+      data['res_office'] = res_office;
+
+    if(type_group!=null)
+      data['type_group'] = type_group;
+
+    if(type!=null)
+      data['type'] = type;
+
+    if(mineral_group!=null)
+      data['mineral_group'] = mineral_group;
+
     if(minerals!=null)
       data['minerals'] = minerals;
-    print("=======================");
-    print(data);
-    print("======================");
+
+    if(district!=null)
+      data['district'] = district;
+
+    if(grant_date!=null)
+      data['grant_date'] = grant_date;
+
+    if(expiry_date!=null)
+      data['expiry_date'] = expiry_date;
+
+    if(area!=null)
+      data['area'] = area;
+
+    if(unit!=null)
+      data['unit'] = unit;
+
+    //print("=======================");
+    //print(data);
+    //print("======================");
     return data;
   }
+
+  Lease copy({int? id, String? name, String? province}) => Lease(
+      id: id ?? this.id,
+      code: code ?? this.code,
+      district: province ?? this.district);
 
 }

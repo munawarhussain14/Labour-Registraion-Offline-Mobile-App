@@ -1,18 +1,28 @@
+import 'dart:convert';
 import 'dart:core';
+import 'dart:developer';
 
 import 'package:cmlw_labour_registration/database/db.dart';
 import 'package:cmlw_labour_registration/models/lease.dart';
+import 'package:flutter/material.dart';
 
-class LeaseService extends DB{
+class LeaseService extends DB {
+  LeaseService() {
+    //createMineralTitleTable();
+  }
 
   @override
   Future<dynamic> create(dynamic table) async {
     final db = await DB.instance.database;
-
-    final json = table.toJson();
-    print(table.toJson());
+    final Map<String, dynamic> json = {
+      "code": table.code,
+      "parties": table.parties,
+      "district": table.district,
+      "minerals": table.minerals
+    };
+    print(json);
     final id = await db.insert(tableLease, table.toJson());
-
+    //print(json);
     return table.copy(id: id);
   }
 
@@ -24,48 +34,63 @@ class LeaseService extends DB{
         columns: LeaseFields.values,
         where: '${LeaseFields.id}= ?',
         whereArgs: [id]);
-    if(maps.isNotEmpty){
+    if (maps.isNotEmpty) {
       return Lease.fromJson(maps.first);
-    }else{
+    } else {
       return null;
       throw Exception('ID $id not found');
     }
   }
 
-  Future<List<dynamic>> readAll() async{
-    //createMineralTitleTable();
+  Future<List<dynamic>> readAll() async {
     final db = await DB.instance.database;
 
     final orderBy = '${LeaseFields.code} ASC';
 
-    final result = await db.query(tableLease,orderBy:orderBy);
+    final result = await db.query(tableLease, orderBy: orderBy);
 
-    return result.map((json)=>Lease.fromJson(json)).toList();
+    return result.map((json) => Lease.fromJson(json)).toList();
   }
 
-  Future<int> deleteAll() async{
+  Future<List<dynamic>> getByDistrict(String keyword, String district) async {
     final db = await DB.instance.database;
 
-    return await db.delete(
-        tableLease
-    );
+    final orderBy = '${LeaseFields.code} ASC';
+
+    final result = await db.rawQuery(
+        "select code, minerals, district, parties from ${tableLease} where district='${district}' or minerals like '%${keyword}%' or code like '%${keyword}%' or parties like '%${keyword}%' order by id");
+
+    return result.map((json) => Lease.fromJson(json)).toList();
   }
 
-  Future<int> update(dynamic table) async{
+  Future<List<dynamic>> getDistricts() async {
+    final db = await DB.instance.database;
+
+    final orderBy = '${LeaseFields.code} ASC';
+
+    final result = await db.rawQuery(
+        "select distinct district from ${tableLease} order by district");
+
+    return result.map((json) => Lease.fromJson(json)).toList();
+  }
+
+  Future<int> deleteAll() async {
+    final db = await DB.instance.database;
+
+    return await db.delete(tableLease);
+  }
+
+  Future<int> update(dynamic table) async {
     final db = await DB.instance.database;
 
     return db.update(tableLease, table.toJson(),
-        where: '${LeaseFields.id}= ?',
-        whereArgs: [table.id]);
+        where: '${LeaseFields.id}= ?', whereArgs: [table.id]);
   }
 
-  Future<int> delete(int id) async{
+  Future<int> delete(int id) async {
     final db = await DB.instance.database;
 
-    return await db.delete(
-        tableLease,
-        where: '${LeaseFields.id}= ?',
-        whereArgs: [id]
-    );
+    return await db
+        .delete(tableLease, where: '${LeaseFields.id}= ?', whereArgs: [id]);
   }
 }

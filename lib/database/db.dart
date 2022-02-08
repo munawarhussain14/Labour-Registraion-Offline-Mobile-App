@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cmlw_labour_registration/models/area.dart';
 import 'package:cmlw_labour_registration/models/district.dart';
 import 'package:cmlw_labour_registration/models/labour.dart';
 import 'package:cmlw_labour_registration/models/lease.dart';
@@ -15,12 +16,14 @@ class DB {
 
   static Database? _database;
 
+  static String db_name = "dev_labour.db";
+
   DB._init();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('dev_labour.db');
+    _database = await _initDB(db_name);
     return _database!;
   }
 
@@ -28,44 +31,51 @@ class DB {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(path, version: 1, onCreate: _createDB );
+  }
+
+  Future removeDatabase()async{
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, db_name);
+
+    await deleteDatabase(path);
   }
 
   Future _createDB(Database db, int version) async {
     final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    final textType = 'TEXT NOT NULL';
-    final boolType = 'BOOLEAN NOT NULL';
-    final numberType = 'INTEGER NOT NULL';
+    final textType = 'TEXT';
+    final boolType = 'BOOLEAN';
+    final numberType = 'INTEGER';
 
     String sql = 'CREATE TABLE $tableLabour('
         '${LabourFields.id} $idType,'
-        '${LabourFields.purpose} $textType,'
-        '${LabourFields.name} $textType,'
-        '${LabourFields.cnic} $textType,'
-        '${LabourFields.father_name} $textType,'
-        '${LabourFields.doa} $textType,'
-        '${LabourFields.cell_no_primary} $textType,'
+        '${LabourFields.purpose} $textType NOT NULL,'
+        '${LabourFields.name} $textType NOT NULL,'
+        '${LabourFields.cnic} $textType NOT NULL,'
+        '${LabourFields.father_name} $textType NOT NULL,'
+        '${LabourFields.doa} $textType NOT NULL,'
+        '${LabourFields.cell_no_primary} $textType NOT NULL,'
         '${LabourFields.cell_no_secondary} $textType,'
-        '${LabourFields.gender} $textType,'
-        '${LabourFields.married} $textType,'
+        '${LabourFields.gender} $textType NOT NULL,'
+        '${LabourFields.married} $textType NOT NULL,'
         '${LabourFields.eobi} $textType,'
         '${LabourFields.eobi_no} $textType,'
-        '${LabourFields.work_from} $textType,'
+        '${LabourFields.work_from} $textType NOT NULL,'
         '${LabourFields.work_type} $numberType,'
-        '${LabourFields.perm_address} $textType,'
-        '${LabourFields.perm_district} $numberType)';
+        '${LabourFields.perm_address} $textType NOT NULL,'
+        '${LabourFields.perm_district} $numberType NOT NULL)';
     await db.execute(sql);
 
     sql = 'CREATE TABLE $tableLease('
         '${LeaseFields.id} $idType,'
-        '${LeaseFields.code} $textType,'
-        '${LeaseFields.parties} $textType,'
+        '${LeaseFields.code} $textType NOT NULL,'
+        '${LeaseFields.parties} $textType NOT NULL,'
         '${LeaseFields.rsp_office} $textType,'
         '${LeaseFields.type_group} $textType,'
         '${LeaseFields.type} $textType,'
         '${LeaseFields.mineral_group} $textType,'
-        '${LeaseFields.minerals} $textType,'
-        '${LeaseFields.district} $textType,'
+        '${LeaseFields.minerals} $textType NOT NULL,'
+        '${LeaseFields.district} $textType NOT NULL,'
         '${LeaseFields.grant_date} $textType,'
         '${LeaseFields.expiry_date} $textType,'
         '${LeaseFields.area} $textType,'
@@ -75,13 +85,19 @@ class DB {
 
     sql = 'CREATE TABLE $tableDistrict('
         '${DistrictFields.id} $idType,'
-        '${DistrictFields.name} $textType,'
-        '${DistrictFields.province} $textType)';
+        '${DistrictFields.name} $textType NOT NULL,'
+        '${DistrictFields.province} $textType NOT NULL)';
+    await db.execute(sql);
+
+    sql = 'CREATE TABLE $tableArea('
+        '${AreaFields.id} $idType,'
+        '${AreaFields.name} $textType NOT NULL,'
+        '${AreaFields.lease_code} $textType NOT NULL)';
     await db.execute(sql);
 
     sql = 'CREATE TABLE $tableWorkType('
         '${WorkTypeFields.id} $idType,'
-        '${WorkTypeFields.name} $textType)';
+        '${WorkTypeFields.name} $textType NOT NULL)';
     await db.execute(sql);
   }
 

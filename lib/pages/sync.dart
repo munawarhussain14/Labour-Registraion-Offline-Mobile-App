@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:cmlw_labour_registration/database/db.dart';
 import 'package:cmlw_labour_registration/models/district.dart';
 import 'package:cmlw_labour_registration/models/lease.dart';
 import 'package:cmlw_labour_registration/services/districtServices.dart';
@@ -80,12 +82,30 @@ class _SyncState extends State<Sync> {
                 },
                 child: Text("Delete All Mineral Title", style: TextStyle(color: Colors.white),),
               ),
+            ),
+            Container(
+              width: double.infinity,
+              child: MaterialButton(
+                color: Colors.green,
+                onPressed: (){
+                  deleteDatabase();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Database Delete')),
+                  );
+                },
+                child: Text("Delete Database", style: TextStyle(color: Colors.white),),
+              ),
             )
 
           ],
         ),
       ),
     );
+  }
+
+  void deleteDatabase() async{
+    DB service = new DB();
+    service.removeDatabase();
   }
 
   Future<String> loadDistrictAsset() async {
@@ -103,7 +123,6 @@ class _SyncState extends State<Sync> {
       }
     });
     List<dynamic> list = await service.readAll();
-    print(list);
   }
 
   void deleteAllDistrict() async
@@ -118,11 +137,17 @@ class _SyncState extends State<Sync> {
 
   void syncMineralTitle() async
   {
-    List<List<dynamic>> rows = const CsvToListConverter().convert(await loadMineralTitleAsset());
+    List<List<dynamic>> rows = const CsvToListConverter().convert(await loadMineralTitleAsset()).toList();
+    print(rows.length);
     LeaseService service = new LeaseService();
     rows.asMap().forEach((index,element) async {
       if(index>0){
-        await service.create(Lease.fromJson({
+        /*
+        print(index);
+        print(element.runtimeType);
+        print(element.length);
+        print(element[0]);*/
+        Lease temp = await service.create(Lease.fromJson({
           "code":element[0],
           "parties":element[1],
           "rsp_office":element[2],
@@ -133,13 +158,13 @@ class _SyncState extends State<Sync> {
           "district":element[8],
           "grant_date":element[9],
           "expiry_date":element[10],
-          //"area":element[11],
-          //"unit":element[12]
+//          "area":element[11],
+//          "unit":element[12]
         }));
       }
     });
     List<dynamic> list = await service.readAll();
-    print(list);
+    log("Test",error:list.length);
   }
 
   void deleteAllMineralTitle() async
