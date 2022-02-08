@@ -10,6 +10,7 @@ class LeaseService extends DB{
     final db = await DB.instance.database;
 
     final json = table.toJson();
+    print(table.toJson());
     final id = await db.insert(tableLease, table.toJson());
 
     return table.copy(id: id);

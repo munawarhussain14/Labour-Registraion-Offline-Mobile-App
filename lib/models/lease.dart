@@ -36,6 +36,7 @@ class LeaseFields{
 
 class Lease{
   late int? id;
+  late String? code;
   late String? parties;
   late String? res_office;
   late String? type_group;
@@ -45,11 +46,12 @@ class Lease{
   late String? district;
   late String? grant_date;
   late String? expiry_date;
-  late String? area;
+  late double? area;
   late String? unit;
 
   Lease({
     this.id,
+    this.code,
     this.parties,
     this.res_office,
     this.type_group,
@@ -66,6 +68,7 @@ class Lease{
   factory Lease.fromJson(Map<String, dynamic> json){
     return Lease(
         id:json["id"],
+        code:json["code"],
         parties:json["parties"],
         res_office:json["res_office"],
         type_group:json["type_group"],
@@ -84,12 +87,17 @@ class Lease{
     Map<dynamic,dynamic> data = {};
     if(id!=null)
       data['id'] = id;
+    if(code!=null)
+      data['code'] = code;
     if(parties!=null)
       data['parties'] = parties;
     if(district!=null)
       data['district'] = district;
     if(minerals!=null)
       data['minerals'] = minerals;
+    print("=======================");
+    print(data);
+    print("======================");
     return data;
   }
 

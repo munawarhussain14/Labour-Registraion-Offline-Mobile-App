@@ -33,8 +33,11 @@ class _SyncState extends State<Sync> {
               width: double.infinity,
               child: MaterialButton(
                 color: Colors.blue,
-                onPressed: ()=>{
-                  syncDistrict()
+                onPressed: (){
+                  syncDistrict();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('District Sync Complete')),
+                  );
                 },
                 child: Text("Sync District", style: TextStyle(color: Colors.white),),
               ),
@@ -43,8 +46,11 @@ class _SyncState extends State<Sync> {
               width: double.infinity,
               child: MaterialButton(
                 color: Colors.blue,
-                onPressed: ()=>{
-                  deleteAllDistrict()
+                onPressed: (){
+                  deleteAllDistrict();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('All District Delete Complete')),
+                  );
                 },
                 child: Text("Delete All Districts", style: TextStyle(color: Colors.white),),
               ),
@@ -53,8 +59,11 @@ class _SyncState extends State<Sync> {
               width: double.infinity,
               child: MaterialButton(
                 color: Colors.green,
-                onPressed: ()=>{
-                  syncMineralTitle()
+                onPressed: (){
+                  syncMineralTitle();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Mineral Title Sync Complete')),
+                  );
                 },
                 child: Text("Sync Mineral Title", style: TextStyle(color: Colors.white),),
               ),
@@ -63,8 +72,11 @@ class _SyncState extends State<Sync> {
               width: double.infinity,
               child: MaterialButton(
                 color: Colors.green,
-                onPressed: ()=>{
-                  deleteAllMineralTitle()
+                onPressed: (){
+                  deleteAllMineralTitle();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Mineral Title Delete Complete')),
+                  );
                 },
                 child: Text("Delete All Mineral Title", style: TextStyle(color: Colors.white),),
               ),
@@ -85,12 +97,12 @@ class _SyncState extends State<Sync> {
     List<List<dynamic>> rows = const CsvToListConverter().convert(await loadDistrictAsset());
     //String csv = const ListToCsvConverter().convert(rows);
     DistrictService service = new DistrictService();
-    List<dynamic> list = await service.readAll();
     rows.asMap().forEach((index,element) async {
       if(index>0){
         await service.create(District.fromJson({"id":element[0],"name":element[1],"province":element[1]}));
       }
     });
+    List<dynamic> list = await service.readAll();
     print(list);
   }
 
@@ -108,7 +120,6 @@ class _SyncState extends State<Sync> {
   {
     List<List<dynamic>> rows = const CsvToListConverter().convert(await loadMineralTitleAsset());
     LeaseService service = new LeaseService();
-    List<dynamic> list = await service.readAll();
     rows.asMap().forEach((index,element) async {
       if(index>0){
         await service.create(Lease.fromJson({
@@ -117,16 +128,18 @@ class _SyncState extends State<Sync> {
           "rsp_office":element[2],
           "type_group":element[3],
           "type":element[4],
-          "mineral_group":element[5],
+          "mineral_group":element[7],
           "minerals":element[6],
-          "district":element[7],
-          "grant_date":element[8],
-          "expiry_date":element[9],
-          "area":element[10],
-          "unit":element[11]
+          "district":element[8],
+          "grant_date":element[9],
+          "expiry_date":element[10],
+          //"area":element[11],
+          //"unit":element[12]
         }));
       }
     });
+    List<dynamic> list = await service.readAll();
+    print(list);
   }
 
   void deleteAllMineralTitle() async
