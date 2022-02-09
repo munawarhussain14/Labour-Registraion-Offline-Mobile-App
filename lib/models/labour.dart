@@ -19,6 +19,9 @@ class LabourFields {
   static final String work_type = "work_type";
   static final String perm_address = "perm_address";
   static final String perm_district = "perm_district";
+  static final String area_id = "area_id";
+  static final String area_name = "area_name";
+  static final String lease_code = "lease_code";
   static final String createTime = "createTime";
 
   static final List<String> values = [
@@ -38,6 +41,9 @@ class LabourFields {
     work_type,
     perm_address,
     perm_district,
+    area_id,
+    area_name,
+    lease_code,
     createTime
   ];
 }
@@ -75,6 +81,9 @@ class Labour {
   late int? work_type;
   late String? perm_address;
   late int? perm_district;
+  late int? area_id;
+  late String? area_name;
+  late String? lease_code;
   late DateTime? createTime;
 
   Labour(
@@ -93,7 +102,11 @@ class Labour {
       this.work_from,
       this.work_type,
       this.perm_address,
-      this.perm_district, this.createTime});
+      this.perm_district,
+      this.area_id,
+      this.area_name,
+      this.lease_code,
+        this.createTime});
 
   Labour copy(
           {int? id,
@@ -111,7 +124,11 @@ class Labour {
           DateTime? work_from,
           int? work_type,
           String? perm_address,
-          int? perm_district, DateTime? createTime}) =>
+          int? perm_district,
+          int? area_id,
+          String? area_name,
+          String? lease_code,
+            DateTime? createTime}) =>
       Labour(
           id: id ?? this.id,
           purpose: purpose ?? this.purpose,
@@ -129,6 +146,9 @@ class Labour {
           work_type: work_type ?? this.work_type,
           perm_address: perm_address ?? this.perm_address,
           perm_district: perm_district ?? this.perm_district,
+          area_id: area_id?? this.area_id,
+          area_name: area_name?? this.area_name,
+          lease_code: lease_code?? this.lease_code,
           createTime:createTime??this.createTime);
 
   factory Labour.fromJson(Map<String, dynamic> json) {
@@ -149,6 +169,9 @@ class Labour {
         work_type: json["work_type"],
         perm_address: json["perm_address"],
         perm_district: json["perm_district"],
+        area_id: json["area_id"],
+        area_name: json["area_name"],
+        lease_code: json["lease_code"],
         createTime: json["createTime"]);
   }
 
@@ -171,6 +194,9 @@ class Labour {
     if (work_type != null) data['work_type'] = work_type;
     if (perm_address != null) data['perm_address'] = perm_address;
     if (perm_district != null) data['perm_district'] = perm_district;
+    if (area_id != null) data['area_id'] = area_id;
+    if (area_name != null) data['area_name'] = area_name;
+    if (lease_code != null) data['lease_code'] = lease_code;
     if (createTime != null) data['createTime'] = createTime;
     return data;
   }

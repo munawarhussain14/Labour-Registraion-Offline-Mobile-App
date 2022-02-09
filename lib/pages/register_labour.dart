@@ -1,17 +1,26 @@
 import 'dart:convert';
 
 import 'package:cmlw_labour_registration/layouts/form/text_field.dart';
+import 'package:cmlw_labour_registration/models/area.dart';
 import 'package:cmlw_labour_registration/models/labour.dart';
+import 'package:cmlw_labour_registration/models/lease.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class RegisterLabour extends StatefulWidget {
-  const RegisterLabour({Key? key}) : super(key: key);
+  const RegisterLabour({Key? key, required this.lease,required this.area}) : super(key: key);
 
+  final Lease lease;
+  final Area area;
   @override
-  _RegisterLabourState createState() => _RegisterLabourState();
+  _RegisterLabourState createState() => _RegisterLabourState(lease: lease, area: area);
 }
 
 class _RegisterLabourState extends State<RegisterLabour> {
+
+  _RegisterLabourState({Key? key, required this.lease,required this.area});
+  final Lease lease;
+  final Area area;
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController purpose = new TextEditingController();
@@ -45,57 +54,78 @@ class _RegisterLabourState extends State<RegisterLabour> {
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(10),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                textField("Purpose",purpose),
-                textField("Name",name),
-                textField("CNIC",cnic),
-                textField("Father Name",father_name),
-                textField("Date of Birth",doa),
-                textField("Cell Phone Primary",cell_no_primary),
-                textField("Cell Phone Secondary",cell_no_secondary),
-                textField("Married",married),
-                textField("EOBI",eobi),
-                textField("EOBI No",eobi_no),
-                textField("Work Start From",work_start_from),
-                textField("Work Type",work_type),
-                textField("Permanent Address",perm_address),
-                textField("Permanent District",perm_district),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Validate returns true if the form is valid, or false otherwise.
-                      setLabour();
-                      if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Processing Data')),
-                        );
-                      }
-                    },
-                    child: const Text('Submit'),
-                  ),
+          child: Column(
+            children: [
+              Container(
+                child: ListTile(
+                  title: Text("${lease.parties}"),
+                  subtitle: Text("${lease.code}\n(${lease.minerals})\nArea: ${area.name}"),
                 ),
-              ],
-            ),
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+//                    textField("Purpose",purpose),
+                    textField("Name",name,icon:Icons.person),
+                    cnicField("CNIC",cnic),
+                    textField("Father Name",father_name,icon:Icons.person),
+                    dateField("Date of Birth",(date)=>{
+                      doa.text = date
+                    }),
+                    cellField("Cell Phone Primary",cell_no_primary),
+                    cellField("Cell Phone Secondary",cell_no_secondary),
+                    textField("Married",married,icon:Icons.person),
+                    textField("EOBI",eobi,icon:Icons.person),
+                    textField("EOBI No",eobi_no,icon:Icons.person),
+                    dateField("Work Start From",(date)=>{
+                      work_start_from.text = date
+                    }),
+                    textField("Work Type",work_type,icon:Icons.person),
+                    textField("Permanent Address",perm_address,icon:Icons.card_travel),
+                    textField("Permanent District",perm_district,icon:Icons.card_travel),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Validate returns true if the form is valid, or false otherwise.
+                          print(jsonEncode(setLabour()));
+                          if (_formKey.currentState!.validate()) {
+                            print("Success");
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Processing Data')),
+                            );
+                          }
+                        },
+                        child: const Text('Submit'),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),
     );
   }
 
-  void setLabour(){
+  Labour setLabour(){
+    Map<String,dynamic> data = {};
+    data['area_id'] = area.id;
+    data['area_name'] = area.name;
+    data['lease_code'] = area.lease_code;
+    data['purpose'] = "labour";
     /*if(!purpose.text.isEmpty){
       labour.purpose = purpose.text;
-    }
+    }*/
     if(!name.text.isEmpty){
-      labour.name = name.text;
+      data['name'] = name.text;
     }
     if(!cnic.text.isEmpty){
-      labour.cnic = cnic.text;
+      data['cnic'] = cnic.text;
     }
+    /*
     if(!father_name.text.isEmpty){
       labour.father_name = father_name.text;
     }
@@ -132,5 +162,6 @@ class _RegisterLabourState extends State<RegisterLabour> {
     if(!perm_district.text.isEmpty){
       // labour.perm_district = perm_district.text;
     }*/
+    return Labour.fromJson(data);
   }
 }

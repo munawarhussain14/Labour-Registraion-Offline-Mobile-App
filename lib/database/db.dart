@@ -63,7 +63,10 @@ class DB {
         '${LabourFields.work_from} $textType NOT NULL,'
         '${LabourFields.work_type} $numberType,'
         '${LabourFields.perm_address} $textType NOT NULL,'
-        '${LabourFields.perm_district} $numberType NOT NULL)';
+        '${LabourFields.perm_district} $numberType NOT NULL,'
+        '${LabourFields.area_id} $numberType NOT NULL,'
+        '${LabourFields.area_name} $numberType NOT NULL,'
+        '${LabourFields.lease_code} $textType NOT NULL,)';
     await db.execute(sql);
 
     sql = 'CREATE TABLE $tableLease('

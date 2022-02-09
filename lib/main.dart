@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             getTile("Labours Registered: 200",()=>{}),
             getTile("Register Labour",()=>{
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisterLabour()))
+              //Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisterLabour()))
             }),
             getTile("District",()=>{
               Navigator.push(context, MaterialPageRoute(builder: (context)=>DistrictPage()))

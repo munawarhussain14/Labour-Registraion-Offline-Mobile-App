@@ -29,11 +29,11 @@ class _MineralTitlePageState extends State<MineralTitlePage> {
   @override
   void initState() {
     super.initState();
+    customSearchBar = Text("${district} District");
   }
 
   @override
   Widget build(BuildContext context) {
-    customSearchBar = Text("${district} District");
     return Scaffold(
       appBar: AppBar(
         title: customSearchBar,
@@ -87,7 +87,7 @@ class _MineralTitlePageState extends State<MineralTitlePage> {
       body: FutureBuilder<List<dynamic>>(
         future: districts,
         builder: (context, dataSnap){
-          log("Data Snap",name: "District",error: dataSnap.data);
+          //log("Data Snap",name: "District",error: dataSnap.data);
           if(dataSnap.hasData){
             List<dynamic> data = dataSnap.data as List;
             return ListView.builder(

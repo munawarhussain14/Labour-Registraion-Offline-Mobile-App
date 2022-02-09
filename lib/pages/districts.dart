@@ -28,7 +28,7 @@ class _DistrictPageState extends State<DistrictPage> {
       body: FutureBuilder<List<dynamic>>(
         future: districts,
         builder: (context, dataSnap){
-          log("Data Snap",name: "District",error: dataSnap.data);
+          //log("Data Snap",name: "District",error: dataSnap.data);
           if(dataSnap.hasData){
             List<dynamic> data = dataSnap.data as List;
             return ListView.builder(

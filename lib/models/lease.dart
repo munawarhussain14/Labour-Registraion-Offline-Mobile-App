@@ -123,10 +123,6 @@ class Lease{
 
     if(unit!=null)
       data['unit'] = unit;
-
-    //print("=======================");
-    //print(data);
-    //print("======================");
     return data;
   }
 

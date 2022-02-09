@@ -20,9 +20,7 @@ class LeaseService extends DB {
       "district": table.district,
       "minerals": table.minerals
     };
-    print(json);
     final id = await db.insert(tableLease, table.toJson());
-    //print(json);
     return table.copy(id: id);
   }
 

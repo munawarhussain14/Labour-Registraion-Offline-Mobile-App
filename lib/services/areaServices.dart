@@ -31,11 +31,23 @@ class AreaService extends DB {
   }
 
   Future<List<dynamic>> readAll() async {
+
     final db = await DB.instance.database;
 
     final orderBy = '${AreaFields.name} ASC';
 
     final result = await db.query(tableArea, orderBy: orderBy);
+
+    return result.map((json) => Area.fromJson(json)).toList();
+  }
+
+  Future<List<dynamic>> readWhere(String condition) async {
+
+    final db = await DB.instance.database;
+
+    final orderBy = '${AreaFields.name} ASC';
+
+    final result = await db.query(tableArea,where: condition, orderBy: orderBy);
 
     return result.map((json) => Area.fromJson(json)).toList();
   }
