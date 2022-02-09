@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
-Widget textField(String label, controller,{icon}) {
+Widget textField(String label, controller, {icon}) {
   return TextFormField(
     controller: controller,
     // The validator receives the text that the user has entered.
     decoration: InputDecoration(
         // border: OutlineInputBorder(),
         label: Text("${label}"),
-        icon:Icon(icon)
-    ),
+        icon: Icon(icon)),
     validator: (value) {
       if (value == null || value.isEmpty) {
         return 'Please enter Labour ${label}';
@@ -35,8 +34,7 @@ Widget cnicField(String label, controller) {
         // border: OutlineInputBorder(),
         label: Text("${label}"),
         hintText: "00000-0000000-0",
-        icon: Icon(Icons.card_membership)
-    ),
+        icon: Icon(Icons.card_membership)),
     validator: (value) {
       if (value == null || value.isEmpty) {
         return 'Please enter Labour ${label}';
@@ -91,5 +89,43 @@ Widget dateField(String label, inputValue) {
       return null;
     },
     onSaved: (val) => print(val),
+  );
+}
+
+bool married = false;
+
+Widget marriedField(String label, inputData) {
+  return Row(
+    children: [
+      Text("${label}"),
+      Checkbox(
+        checkColor: Colors.white,
+//    fillColor: MaterialStateProperty.resolveWith(getColor),
+        value: married,
+        onChanged: (bool? value) {
+          married = value!;
+          inputData(value);
+        },
+      )
+    ],
+  );
+}
+
+bool eobi = false;
+
+Widget eobiField(String label, inputData) {
+  return Row(
+    children: [
+      Text("${label}"),
+      Checkbox(
+        checkColor: Colors.white,
+//    fillColor: MaterialStateProperty.resolveWith(getColor),
+        value: eobi,
+        onChanged: (bool? value) {
+          eobi = value!;
+          inputData(value);
+        },
+      )
+    ],
   );
 }

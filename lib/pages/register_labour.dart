@@ -8,17 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class RegisterLabour extends StatefulWidget {
-  const RegisterLabour({Key? key, required this.lease,required this.area}) : super(key: key);
+  const RegisterLabour({Key? key, required this.lease, required this.area})
+      : super(key: key);
 
   final Lease lease;
   final Area area;
+
   @override
-  _RegisterLabourState createState() => _RegisterLabourState(lease: lease, area: area);
+  _RegisterLabourState createState() =>
+      _RegisterLabourState(lease: lease, area: area);
 }
 
 class _RegisterLabourState extends State<RegisterLabour> {
+  _RegisterLabourState({Key? key, required this.lease, required this.area});
 
-  _RegisterLabourState({Key? key, required this.lease,required this.area});
   final Lease lease;
   final Area area;
 
@@ -38,6 +41,7 @@ class _RegisterLabourState extends State<RegisterLabour> {
   final TextEditingController work_type = new TextEditingController();
   final TextEditingController perm_address = new TextEditingController();
   final TextEditingController perm_district = new TextEditingController();
+
   //Labour labour = new Labour();
 
   @override
@@ -59,7 +63,8 @@ class _RegisterLabourState extends State<RegisterLabour> {
               Container(
                 child: ListTile(
                   title: Text("${lease.parties}"),
-                  subtitle: Text("${lease.code}\n(${lease.minerals})\nArea: ${area.name}"),
+                  subtitle: Text(
+                      "${lease.code}\n(${lease.minerals})\nArea: ${area.name}"),
                 ),
               ),
               Form(
@@ -67,23 +72,24 @@ class _RegisterLabourState extends State<RegisterLabour> {
                 child: Column(
                   children: <Widget>[
 //                    textField("Purpose",purpose),
-                    textField("Name",name,icon:Icons.person),
-                    cnicField("CNIC",cnic),
-                    textField("Father Name",father_name,icon:Icons.person),
-                    dateField("Date of Birth",(date)=>{
-                      doa.text = date
-                    }),
-                    cellField("Cell Phone Primary",cell_no_primary),
-                    cellField("Cell Phone Secondary",cell_no_secondary),
-                    textField("Married",married,icon:Icons.person),
-                    textField("EOBI",eobi,icon:Icons.person),
-                    textField("EOBI No",eobi_no,icon:Icons.person),
-                    dateField("Work Start From",(date)=>{
-                      work_start_from.text = date
-                    }),
-                    textField("Work Type",work_type,icon:Icons.person),
-                    textField("Permanent Address",perm_address,icon:Icons.card_travel),
-                    textField("Permanent District",perm_district,icon:Icons.card_travel),
+                    textField("Name", name, icon: Icons.person),
+                    cnicField("CNIC", cnic),
+                    textField("Father Name", father_name, icon: Icons.person),
+                    dateField("Date of Birth", (date) => {doa.text = date}),
+                    cellField("Cell Phone Primary", cell_no_primary),
+                    cellField("Cell Phone Secondary", cell_no_secondary),
+                    //textField("Married", married, icon: Icons.person),
+                    marriedField("Married", (data) => {setState(() {})}),
+                    //textField("EOBI", eobi, icon: Icons.person),
+                    eobiField("EOBI", (data) => {setState(() {})}),
+                    textField("EOBI No", eobi_no, icon: Icons.person),
+                    dateField("Work Start From",
+                        (date) => {work_start_from.text = date}),
+                    textField("Work Type", work_type, icon: Icons.person),
+                    textField("Permanent Address", perm_address,
+                        icon: Icons.card_travel),
+                    textField("Permanent District", perm_district,
+                        icon: Icons.card_travel),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ElevatedButton(
@@ -110,8 +116,8 @@ class _RegisterLabourState extends State<RegisterLabour> {
     );
   }
 
-  Labour setLabour(){
-    Map<String,dynamic> data = {};
+  Labour setLabour() {
+    Map<String, dynamic> data = {};
     data['area_id'] = area.id;
     data['area_name'] = area.name;
     data['lease_code'] = area.lease_code;
@@ -119,10 +125,10 @@ class _RegisterLabourState extends State<RegisterLabour> {
     /*if(!purpose.text.isEmpty){
       labour.purpose = purpose.text;
     }*/
-    if(!name.text.isEmpty){
+    if (!name.text.isEmpty) {
       data['name'] = name.text;
     }
-    if(!cnic.text.isEmpty){
+    if (!cnic.text.isEmpty) {
       data['cnic'] = cnic.text;
     }
     /*
