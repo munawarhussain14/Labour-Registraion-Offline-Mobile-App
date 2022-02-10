@@ -72,14 +72,14 @@ class Labour {
   late String? name;
   late String? cnic;
   late String? father_name;
-  late DateTime? doa;
+  late String? doa;
   late String? cell_no_primary;
   late String? cell_no_secondary;
   late String? gender;
   late String? married;
   late String? eobi;
   late String? eobi_no;
-  late DateTime? work_from;
+  late String? work_from;
   late String? work_type;
   late String? perm_address;
   late String? perm_district_name;
@@ -87,7 +87,7 @@ class Labour {
   late int? area_id;
   late String? area_name;
   late String? lease_code;
-  late DateTime? createTime;
+  late String? createTime;
 
   Labour(
       {this.id,
@@ -118,14 +118,14 @@ class Labour {
           String? name,
           String? cnic,
           String? father_name,
-          DateTime? doa,
+          String? doa,
           String? cell_no_primary,
           String? cell_no_secondary,
           String? gender,
           String? married,
           String? eobi,
           String? eobi_no,
-          DateTime? work_from,
+          String? work_from,
           String? work_type,
           String? perm_address,
           String? perm_district_name,
@@ -133,7 +133,7 @@ class Labour {
           int? area_id,
           String? area_name,
           String? lease_code,
-            DateTime? createTime}) =>
+            String? createTime}) =>
       Labour(
           id: id ?? this.id,
           purpose: purpose ?? this.purpose,
@@ -171,7 +171,7 @@ class Labour {
         married: json["married"],
         eobi: json["eobi"],
         eobi_no: json["eobi_no"],
-        work_from: DateTime.parse(json["work_from"]),
+        work_from: json["work_from"],
         work_type: json["work_type"],
         perm_address: json["perm_address"],
         perm_district_name: json["perm_district_name"],
@@ -189,7 +189,7 @@ class Labour {
     if (name != null) data['name'] = name;
     if (cnic != null) data['cnic'] = cnic;
     if (father_name != null) data['father_name'] = father_name;
-    if (doa != null) data['doa'] = doa?.toIso8601String();
+    if (doa != null) data['doa'] = doa;
     if (cell_no_primary != null) data['cell_no_primary'] = cell_no_primary;
     if (cell_no_secondary != null)
       data['cell_no_secondary'] = cell_no_secondary;
@@ -197,7 +197,7 @@ class Labour {
     if (married != null) data['married'] = married;
     if (eobi != null) data['eobi'] = eobi;
     if (eobi_no != null) data['eobi_no'] = eobi_no;
-    if (work_from != null) data['work_from'] = work_from?.toIso8601String();
+    if (work_from != null) data['work_from'] = work_from;
     if (work_type != null) data['work_type'] = work_type;
     if (perm_address != null) data['perm_address'] = perm_address;
     if (perm_district_name != null) data['perm_district_name'] = perm_district_name;
@@ -205,7 +205,7 @@ class Labour {
     if (area_id != null) data['area_id'] = area_id;
     if (area_name != null) data['area_name'] = area_name;
     if (lease_code != null) data['lease_code'] = lease_code;
-    if (createTime != null) data['createTime'] = createTime?.toIso8601String();
+    if (createTime != null) data['createTime'] = createTime;
     return data;
   }
 }
