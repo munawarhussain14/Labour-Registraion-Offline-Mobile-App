@@ -5,6 +5,8 @@ final String tableWorkType = 'work_type';
 class WorkTypeFields{
   static final String id = "id";
   static final String name = "name";
+
+  static final List<String> values = [id, name];
 }
 
 class WorkType{
@@ -31,5 +33,9 @@ class WorkType{
       data['name'] = name;
     return data;
   }
+
+  WorkType copy({int? id, String? name}) => WorkType(
+      id: id ?? this.id,
+      name: name ?? this.name);
 
 }

@@ -4,8 +4,11 @@ import 'package:cmlw_labour_registration/layouts/form/text_field.dart';
 import 'package:cmlw_labour_registration/models/area.dart';
 import 'package:cmlw_labour_registration/models/labour.dart';
 import 'package:cmlw_labour_registration/models/lease.dart';
+import 'package:cmlw_labour_registration/services/districtServices.dart';
+import 'package:cmlw_labour_registration/services/labourServices.dart';
+import 'package:cmlw_labour_registration/services/workTypeServices.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:awesome_select/awesome_select.dart';
 
 class RegisterLabour extends StatefulWidget {
   const RegisterLabour({Key? key, required this.lease, required this.area})
@@ -42,11 +45,43 @@ class _RegisterLabourState extends State<RegisterLabour> {
   final TextEditingController perm_address = new TextEditingController();
   final TextEditingController perm_district = new TextEditingController();
 
+  final LabourService labourService = new LabourService();
+  final WorkTypeService service = new WorkTypeService();
+  late Future<List<dynamic>> workType = service.readAll();
+  final DistrictService districtService = new DistrictService();
+  late Future<List<dynamic>> districts = districtService.readAll();
+
   //Labour labour = new Labour();
+
+  String value = 'None';
+  String districtValue = 'None';
+  List<S2Choice<String>> options = [];
 
   @override
   void initState() {
     super.initState();
+  }
+
+  List<S2Choice<String>> getOptions(dynamic data) {
+    if (data == null) {
+      return [];
+    }
+    List<S2Choice<String>> temp = data
+        .map<S2Choice<String>>(
+            (e) => S2Choice<String>(value: e.name, title: e.name))
+        .toList();
+    return temp;
+  }
+
+  List<S2Choice<String>> getDistricts(dynamic data) {
+    if (data == null) {
+      return [];
+    }
+    List<S2Choice<String>> temp = data
+        .map<S2Choice<String>>(
+            (e) => S2Choice<String>(value: e.name, title: e.name))
+        .toList();
+    return temp;
   }
 
   @override
@@ -56,61 +91,118 @@ class _RegisterLabourState extends State<RegisterLabour> {
         title: Text("Register Labour"),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Container(
-                child: ListTile(
-                  title: Text("${lease.parties}"),
-                  subtitle: Text(
-                      "${lease.code}\n(${lease.minerals})\nArea: ${area.name}"),
-                ),
-              ),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-//                    textField("Purpose",purpose),
-                    textField("Name", name, icon: Icons.person),
-                    cnicField("CNIC", cnic),
-                    textField("Father Name", father_name, icon: Icons.person),
-                    dateField("Date of Birth", (date) => {doa.text = date}),
-                    cellField("Cell Phone Primary", cell_no_primary),
-                    cellField("Cell Phone Secondary", cell_no_secondary),
-                    //textField("Married", married, icon: Icons.person),
-                    marriedField("Married", (data) => {setState(() {})}),
-                    //textField("EOBI", eobi, icon: Icons.person),
-                    eobiField("EOBI", (data) => {setState(() {})}),
-                    textField("EOBI No", eobi_no, icon: Icons.person),
-                    dateField("Work Start From",
-                        (date) => {work_start_from.text = date}),
-                    textField("Work Type", work_type, icon: Icons.person),
-                    textField("Permanent Address", perm_address,
-                        icon: Icons.card_travel),
-                    textField("Permanent District", perm_district,
-                        icon: Icons.card_travel),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Validate returns true if the form is valid, or false otherwise.
-                          print(jsonEncode(setLabour()));
-                          if (_formKey.currentState!.validate()) {
-                            print("Success");
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Processing Data')),
-                            );
-                          }
-                        },
-                        child: const Text('Submit'),
-                      ),
+        child: FutureBuilder(
+          future: workType,
+          builder: (context, dataSnap) {
+            //print(dataSnap.data);
+
+            return Container(
+              margin: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Container(
+                    child: ListTile(
+                      title: Text("${lease.parties}"),
+                      subtitle: Text(
+                          "${lease.code}\n(${lease.minerals})\nArea: ${area.name}"),
                     ),
-                  ],
-                ),
-              )
-            ],
-          ),
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+//                    textField("Purpose",purpose),
+                        textField("Name", name, icon: Icons.person),
+                        cnicField("CNIC", cnic),
+                        textField("Father Name", father_name,
+                            icon: Icons.person),
+                        dateField("Date of Birth", (date) => {doa.text = date}),
+                        cellField("Cell Phone Primary", cell_no_primary),
+                        cellField("Cell Phone Secondary", cell_no_secondary),
+                        //textField("Married", married, icon: Icons.person),
+                        marriedField(
+                            "Married",
+                            (data) => {
+                                  setState(() {
+                                    married.text = (data) ? "Yes" : "No";
+                                  })
+                                }),
+                        //textField("EOBI", eobi, icon: Icons.person),
+                        eobiField(
+                            "EOBI",
+                            (data) => {
+                                  setState(() {
+                                    eobi.text = (data) ? "Yes" : "No";
+                                  })
+                                }),
+                        textField("EOBI No", eobi_no,
+                            icon: Icons.person, required: false),
+                        dateField("Work Start From",
+                            (date) => {work_start_from.text = date}),
+                        SmartSelect<String>.single(
+                            title: 'Work Type',
+                            selectedValue: value,
+                            choiceItems: getOptions(dataSnap.data),
+                            onChange: (state) => setState(() {
+                                  work_type.text = value;
+                                  value = state.value.toString();
+                                })),
+                        textField("Permanent Address", perm_address,
+                            icon: Icons.card_travel),
+                        FutureBuilder(
+                            future: districts,
+                            builder: (context, districtData) {
+//                              print(districtData.data);
+                              return SmartSelect<String>.single(
+                                  title: 'District',
+                                  selectedValue: districtValue,
+                                  choiceItems: getDistricts(districtData.data),
+                                  onChange: (state) => setState(() {
+                                        perm_district.text = value;
+                                        print(perm_district.text);
+                                        value = state.value.toString();
+                                      }));
+                            }),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Validate returns true if the form is valid, or false otherwise.
+
+                              if (_formKey.currentState!.validate()) {
+                                if (work_type.text.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('Please select Work Type')),
+                                  );
+                                }
+                                if (perm_district.text.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Please select Permananet District')),
+                                  );
+                                } else {
+                                  Labour labour = setLabour();
+                                  labourService.create(labour);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Processing Data')),
+                                  );
+                                }
+                              }
+                            },
+                            child: const Text('Submit'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -122,52 +214,58 @@ class _RegisterLabourState extends State<RegisterLabour> {
     data['area_name'] = area.name;
     data['lease_code'] = area.lease_code;
     data['purpose'] = "labour";
-    /*if(!purpose.text.isEmpty){
-      labour.purpose = purpose.text;
-    }*/
+    data['gender'] = "male";
+    data["createTime"] = DateTime.now();
+
     if (!name.text.isEmpty) {
       data['name'] = name.text;
     }
     if (!cnic.text.isEmpty) {
       data['cnic'] = cnic.text;
     }
-    /*
-    if(!father_name.text.isEmpty){
-      labour.father_name = father_name.text;
+
+    if (!father_name.text.isEmpty) {
+      data['father_name'] = father_name.text;
     }
-    if(!doa.text.isEmpty){
-      //labour.doa = doa.text;
+    if (!doa.text.isEmpty) {
+      data['doa'] = DateTime.parse(doa.text);
     }
-    if(!cell_no_primary.text.isEmpty){
-      labour.cell_no_primary = cell_no_primary.text.trim();
+    if (!cell_no_primary.text.isEmpty) {
+      data['cell_no_primary'] = cell_no_primary.text.trim();
     }
-    if(!cell_no_secondary.text.isEmpty){
-      labour.cell_no_secondary = cell_no_secondary.text.trim();
+    if (!cell_no_secondary.text.isEmpty) {
+      data['cell_no_secondary'] = cell_no_secondary.text.trim();
     }
-    if(!district.text.isEmpty){
-      //labour.district_id = district.text.trim();
+
+    if (!married.text.isEmpty) {
+      data['married'] = married.text.trim();
     }
-    if(!married.text.isEmpty){
-      labour.married = married.text.trim();
+
+    if (!eobi.text.isEmpty) {
+      data['eobi'] = eobi.text.trim();
     }
-    if(!eobi.text.isEmpty){
-      labour.eobi = eobi.text.trim();
+
+    if (!eobi_no.text.isEmpty) {
+      data['eobi_no'] = eobi_no.text.trim();
     }
-    if(!eobi_no.text.isEmpty){
-      labour.eobi_no = eobi_no.text.trim();
+
+    if (!work_start_from.text.isEmpty) {
+      data['work_from'] = work_start_from.text.trim();
     }
-    if(!work_start_from.text.isEmpty){
-      //labour.work_from = work_start_from.text;
+
+    if (!work_type.text.isEmpty) {
+      data['work_type'] = work_type.text.trim();
     }
-    if(!work_type.text.isEmpty){
-      //labour.work_type = work_type.text;
+
+    if (!perm_address.text.isEmpty) {
+      data['perm_address'] = perm_address.text.trim();
     }
-    if(!perm_address.text.isEmpty){
-      labour.perm_address = perm_address.text.trim();
+
+    if (!perm_district.text.isEmpty) {
+      data['perm_district_name'] = district.text.trim();
+      data['perm_district'] = 0;
     }
-    if(!perm_district.text.isEmpty){
-      // labour.perm_district = perm_district.text;
-    }*/
+
     return Labour.fromJson(data);
   }
 }

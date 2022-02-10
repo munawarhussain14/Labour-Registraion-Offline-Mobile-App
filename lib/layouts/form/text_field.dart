@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
-Widget textField(String label, controller, {icon}) {
+Widget textField(String label, controller, {icon,required=true}) {
   return TextFormField(
     controller: controller,
     // The validator receives the text that the user has entered.
@@ -11,7 +11,7 @@ Widget textField(String label, controller, {icon}) {
         label: Text("${label}"),
         icon: Icon(icon)),
     validator: (value) {
-      if (value == null || value.isEmpty) {
+      if (required&&(value == null || value.isEmpty)) {
         return 'Please enter Labour ${label}';
       }
       return null;
@@ -48,7 +48,7 @@ Widget cnicField(String label, controller) {
 
 Widget cellField(String label, controller) {
   var maskFormatter = new MaskTextInputFormatter(
-      mask: '####-#######',
+      mask: '03##-#######',
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
 
@@ -65,7 +65,7 @@ Widget cellField(String label, controller) {
     validator: (value) {
       if (value == null || value.isEmpty) {
         return 'Please enter Labour ${label}';
-      } else if (value.length < 15) {
+      } else if (value.length < 12) {
         return 'Invalid ${label}';
       }
       return null;
@@ -78,7 +78,7 @@ Widget dateField(String label, inputValue) {
     initialValue: '',
     firstDate: DateTime(1950),
     lastDate: DateTime(2100),
-    dateLabelText: 'Date',
+    dateLabelText: label,
     icon: Icon(Icons.calendar_today),
     onChanged: (val) {
       print(val);

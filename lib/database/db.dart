@@ -61,12 +61,15 @@ class DB {
         '${LabourFields.eobi} $textType,'
         '${LabourFields.eobi_no} $textType,'
         '${LabourFields.work_from} $textType NOT NULL,'
-        '${LabourFields.work_type} $numberType,'
+        '${LabourFields.work_type} $textType,'
         '${LabourFields.perm_address} $textType NOT NULL,'
+        '${LabourFields.perm_district_name} $textType NOT NULL,'
         '${LabourFields.perm_district} $numberType NOT NULL,'
         '${LabourFields.area_id} $numberType NOT NULL,'
         '${LabourFields.area_name} $numberType NOT NULL,'
-        '${LabourFields.lease_code} $textType NOT NULL,)';
+        '${LabourFields.lease_code} $textType NOT NULL,'
+        '${LabourFields.createTime} $textType NOT NULL)';
+
     await db.execute(sql);
 
     sql = 'CREATE TABLE $tableLease('
@@ -126,7 +129,6 @@ class DB {
         '${LeaseFields.area} $textType,'
         '${LeaseFields.unit} $textType'
         ')';
-    //await db.execute('DROP TABLE $tableLease');
     return await db.execute(sql);
   }
 

@@ -1,12 +1,10 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:cmlw_labour_registration/database/db.dart';
 import 'package:cmlw_labour_registration/models/district.dart';
 import 'package:cmlw_labour_registration/models/lease.dart';
+import 'package:cmlw_labour_registration/models/work_type.dart';
 import 'package:cmlw_labour_registration/services/districtServices.dart';
 import 'package:cmlw_labour_registration/services/leaseServices.dart';
+import 'package:cmlw_labour_registration/services/workTypeServices.dart';
 import 'package:flutter/material.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
@@ -88,6 +86,32 @@ class _SyncState extends State<Sync> {
               child: MaterialButton(
                 color: Colors.green,
                 onPressed: (){
+                  syncWorkType();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Work Type Sync Complete')),
+                  );
+                },
+                child: Text("Sync Work Type", style: TextStyle(color: Colors.white),),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              child: MaterialButton(
+                color: Colors.green,
+                onPressed: (){
+                  deleteAllWorkType();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Work Type Delete Complete')),
+                  );
+                },
+                child: Text("Delete All Work Type", style: TextStyle(color: Colors.white),),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              child: MaterialButton(
+                color: Colors.green,
+                onPressed: (){
                   deleteDatabase();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Database Delete')),
@@ -122,7 +146,8 @@ class _SyncState extends State<Sync> {
         await service.create(District.fromJson({"id":element[0],"name":element[1],"province":element[1]}));
       }
     });
-    List<dynamic> list = await service.readAll();
+    //List<dynamic> list = await service.readAll();
+    //print(list);
   }
 
   void deleteAllDistrict() async
@@ -164,12 +189,39 @@ class _SyncState extends State<Sync> {
       }
     });
     List<dynamic> list = await service.readAll();
-    log("Test",error:list.length);
   }
 
   void deleteAllMineralTitle() async
   {
     LeaseService service = new LeaseService();
+    service.deleteAll();
+  }
+
+  Future<String> loadWorkTypeAsset() async {
+    return await rootBundle.loadString('assets/csv/work_types.csv');
+  }
+
+  void syncWorkType() async
+  {
+    List<List<dynamic>> rows = const CsvToListConverter().convert(await loadWorkTypeAsset()).toList();
+    WorkTypeService service = new WorkTypeService();
+    //print(await service.getTables());
+
+    rows.asMap().forEach((index,element) async {
+      if(index>0){
+        WorkType temp = await service.create(WorkType.fromJson({
+          "id":element[0],
+          "name":element[1]
+        }));
+      }
+    });
+    //List<dynamic> list = await service.readAll();
+    //print(list);
+  }
+
+  void deleteAllWorkType() async
+  {
+    WorkTypeService service = new WorkTypeService();
     service.deleteAll();
   }
 }

@@ -18,6 +18,7 @@ class LabourFields {
   static final String work_from = "work_from";
   static final String work_type = "work_type";
   static final String perm_address = "perm_address";
+  static final String perm_district_name = "perm_district_name";
   static final String perm_district = "perm_district";
   static final String area_id = "area_id";
   static final String area_name = "area_name";
@@ -40,6 +41,7 @@ class LabourFields {
     work_from,
     work_type,
     perm_address,
+    perm_district_name,
     perm_district,
     area_id,
     area_name,
@@ -78,8 +80,9 @@ class Labour {
   late String? eobi;
   late String? eobi_no;
   late DateTime? work_from;
-  late int? work_type;
+  late String? work_type;
   late String? perm_address;
+  late String? perm_district_name;
   late int? perm_district;
   late int? area_id;
   late String? area_name;
@@ -102,6 +105,7 @@ class Labour {
       this.work_from,
       this.work_type,
       this.perm_address,
+      this.perm_district_name,
       this.perm_district,
       this.area_id,
       this.area_name,
@@ -122,8 +126,9 @@ class Labour {
           String? eobi,
           String? eobi_no,
           DateTime? work_from,
-          int? work_type,
+          String? work_type,
           String? perm_address,
+          String? perm_district_name,
           int? perm_district,
           int? area_id,
           String? area_name,
@@ -145,6 +150,7 @@ class Labour {
           work_from: work_from ?? this.work_from,
           work_type: work_type ?? this.work_type,
           perm_address: perm_address ?? this.perm_address,
+          perm_district_name: perm_district_name ?? this.perm_district_name,
           perm_district: perm_district ?? this.perm_district,
           area_id: area_id?? this.area_id,
           area_name: area_name?? this.area_name,
@@ -165,9 +171,10 @@ class Labour {
         married: json["married"],
         eobi: json["eobi"],
         eobi_no: json["eobi_no"],
-        work_from: json["work_from"],
+        work_from: DateTime.parse(json["work_from"]),
         work_type: json["work_type"],
         perm_address: json["perm_address"],
+        perm_district_name: json["perm_district_name"],
         perm_district: json["perm_district"],
         area_id: json["area_id"],
         area_name: json["area_name"],
@@ -193,11 +200,12 @@ class Labour {
     if (work_from != null) data['work_from'] = work_from?.toIso8601String();
     if (work_type != null) data['work_type'] = work_type;
     if (perm_address != null) data['perm_address'] = perm_address;
+    if (perm_district_name != null) data['perm_district_name'] = perm_district_name;
     if (perm_district != null) data['perm_district'] = perm_district;
     if (area_id != null) data['area_id'] = area_id;
     if (area_name != null) data['area_name'] = area_name;
     if (lease_code != null) data['lease_code'] = lease_code;
-    if (createTime != null) data['createTime'] = createTime;
+    if (createTime != null) data['createTime'] = createTime?.toIso8601String();
     return data;
   }
 }

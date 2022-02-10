@@ -51,12 +51,13 @@ class LeaseService extends DB {
   }
 
   Future<List<dynamic>> getByDistrict(String keyword, String district) async {
+
     final db = await DB.instance.database;
 
     final orderBy = '${LeaseFields.code} ASC';
 
     final result = await db.rawQuery(
-        "select code, minerals, district, parties from ${tableLease} where district='${district}' or minerals like '%${keyword}%' or code like '%${keyword}%' or parties like '%${keyword}%' order by id");
+        "select code, minerals, district, parties from ${tableLease} where district='${district}' and (minerals like '%${keyword}%' or code like '%${keyword}%' or parties like '%${keyword}%') order by id");
 
     return result.map((json) => Lease.fromJson(json)).toList();
   }

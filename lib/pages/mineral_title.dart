@@ -90,6 +90,7 @@ class _MineralTitlePageState extends State<MineralTitlePage> {
           //log("Data Snap",name: "District",error: dataSnap.data);
           if(dataSnap.hasData){
             List<dynamic> data = dataSnap.data as List;
+            print(data.length);
             return ListView.builder(
                 itemCount: data.length,
                 itemBuilder: (context, index){
@@ -103,7 +104,7 @@ class _MineralTitlePageState extends State<MineralTitlePage> {
                                   builder: (context)=>AreasPage(lease: data[index])));
                         },
                         title: (data[index].parties!='')?Text("${data[index].parties}"):Text("Not mentioned", style: TextStyle(color: Colors.red),),
-                        subtitle: Text("${data[index].code}\n(${data[index].minerals})")
+                        subtitle: Text("${data[index].code}\n(${data[index].minerals})(${data[index].district})")
                     ),
                   );
                 }

@@ -1,0 +1,80 @@
+id,name,urdu_name,user
+1,Coal Cutter,NULL,admin
+2,Compressor Operator,NULL,admin
+3,Timber Man,NULL,admin
+4,Haulage Operator,NULL,admin
+5,Drill Man,NULL,admin
+6,Excavator Operator,NULL,admin
+7,Excavator Helper,NULL,admin
+8,Dozer Operator ,NULL,admin
+9,Dozer Helper,NULL,admin
+10,Crawler Operator,NULL,admin
+11,Crawler Helper,NULL,admin
+12,Loader Operator,NULL,admin
+13,Pump Operator,NULL,admin
+14,Water Bozer,NULL,admin
+15,Gradder Operator,NULL,admin
+16,Cutter,NULL,admin
+17,Quarry Worker,NULL,admin
+18,Munshi,NULL,labour
+19,Mine Manager,NULL,labour
+20,Mine Sirdar,NULL,labour
+21,Mate/ Jodi Sar,NULL,labour
+22,Shot Firer,NULL,admin
+23,MECHANIC,NULL,labour
+24,Mete,NULL,labour
+25,badi,NULL,labour
+26,DRIVER,NULL,labour
+27,Jorresar,NULL,labour
+28,Engineer,NULL,labour
+29,Mine Labour ,NULL,labour
+30,Lift Operator,NULL,labour
+31,ٹھیکیدار,NULL,labour
+32,Chokidar ,NULL,labour
+33,Cook,NULL,labour
+34,Mining Dumper Operator,NULL,labour
+35,Tyre Valcanize,NULL,labour
+36,Auto Electrician,NULL,labour
+37,sub engineer,NULL,labour
+38,Fitter,NULL,labour
+39,Dumper Operator ,NULL,labour
+40,DOCTOR,NULL,labour
+41,Greaser,NULL,labour
+42,Superviser,NULL,labour
+43,surveyor,NULL,labour
+44,Labour,NULL,labour
+45,Helper Mining,NULL,labour
+46,Tractor Operator ,NULL,labour
+47,Electrition,NULL,labour
+48,Permit Manager,NULL,labour
+49,Auto Fitter,NULL,labour
+50,Crusher Operator,NULL,labour
+51,Washman,NULL,labour
+52,Stacker Operator,NULL,labour
+53,Assistant ,NULL,labour
+54,Patrolman,NULL,labour
+55,I/C Auto (SDM),NULL,labour
+56,Lease Manager,NULL,labour
+57,OPERATOR HALECH,NULL,labour
+58,Auto workshop (Srassistant manager),NULL,labour
+59,Magazine Incharge,NULL,labour
+60,Auto Helper,NULL,labour
+61,Surveyor Helper,NULL,labour
+62,Blasting Helper,NULL,labour
+63,Hopper Attendant,NULL,labour
+64,Miner,NULL,labour
+65,Ambulance driver,NULL,labour
+66,Auto Mechanic,NULL,labour
+67,Tekami,NULL,labour
+68,Drangi,NULL,labour
+69,STORE ENCHARGE,NULL,labour
+70,Welder ,NULL,labour
+71,Safety Eng,NULL,labour
+72,PERMANENT DISABLE DUE TO LEF LEG,NULL,labour
+73,Mine Munshi,NULL,labour
+74,Zamrood ,NULL,labour
+75,Bentonite,NULL,labour
+76,for main ,NULL,labour
+77,PERMANENT DISABLE,NULL,labour
+78,OPERATOR,NULL,labour
+79,Cleaner,NULL,labour
