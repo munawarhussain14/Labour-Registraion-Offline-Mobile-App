@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cmlw_labour_registration/pages/districts.dart';
 import 'package:cmlw_labour_registration/pages/labours.dart';
 import 'package:cmlw_labour_registration/layouts/partials/tile.dart';
-import 'package:cmlw_labour_registration/pages/sync.dart';
+import 'package:cmlw_labour_registration/services/labourServices.dart';
 import 'package:flutter/material.dart';
+import 'package:csv/csv.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -92,12 +96,69 @@ class _MyHomePageState extends State<MyHomePage> {
             getTile("Registered Labours",()=>{
               Navigator.push(context, MaterialPageRoute(builder: (context)=>LaboursPage()))
             }),
-            getTile("Sync",()=>{
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const Sync()))
+            getTile("Export Labour CSV File",()async{
+              LabourService labourService = new LabourService();
+              List<List<dynamic>> list = await labourService.exportList();
+              //print(list);
+              getCsv(list);
+              //String csv = const ListToCsvConverter().convert([["Munawar","Aman","Usama"],["CO","Sub Engr","CO"]]);
+              //print(csv.runtimeType);
+              //Navigator.push(context, MaterialPageRoute(builder: (context)=>const Sync()))
             })
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  getCsv(List<List<dynamic>> data) async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    String appDocumentsPath = (await getExternalStorageDirectory())!.path;
+    String filePath = '$appDocumentsPath/labours.csv';
+    String csv = const ListToCsvConverter().convert(data);
+    File file = File(filePath); // 1
+    file.writeAsString(csv);
+    /*
+    String dir = (await getExternalStorageDirectory())!.path + "/CMLW_Labours/labours.csv";
+    String file = "$dir";
+    print(" FILE " + file);
+    File f = new File(file);*/
+
+// convert rows to String and write as csv file
+/*
+    String csv = const ListToCsvConverter().convert(data);
+    f.writeAsString(csv);*/
+    /*var status = await Permission.storage.status;
+    if (status.isDenied) {
+      // We didn't ask for permission yet or the permission has been denied before but not permanently.
+    }*/
+/*
+// You can request multiple permissions at once.
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();*/
+    //print(statuses[Permission.storage]);
+
+/*
+// You can can also directly ask the permission about its status.
+    if (await Permission.location.isRestricted) {
+      // The OS restricts access, for example because of parental controls.
+    }
+    await SimplePermissions.requestPermission(Permission. WriteExternalStorage);
+    bool checkPermission=await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
+    if(checkPermission) {
+
+//store file in documents folder
+
+      String dir = (await getExternalStorageDirectory()).absolute.path + "/documents";
+      file = "$dir";
+      print(LOGTAG+" FILE " + file);
+      File f = new File(file+"filename.csv");
+
+// convert rows to String and write as csv file
+
+      String csv = const ListToCsvConverter().convert(rows);
+      f.writeAsString(csv);
+    }*/
   }
 }

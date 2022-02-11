@@ -4,6 +4,7 @@ import 'package:cmlw_labour_registration/layouts/form/text_field.dart';
 import 'package:cmlw_labour_registration/models/area.dart';
 import 'package:cmlw_labour_registration/models/labour.dart';
 import 'package:cmlw_labour_registration/models/lease.dart';
+import 'package:cmlw_labour_registration/pages/labour_detail.dart';
 import 'package:cmlw_labour_registration/services/districtServices.dart';
 import 'package:cmlw_labour_registration/services/labourServices.dart';
 import 'package:cmlw_labour_registration/services/workTypeServices.dart';
@@ -53,7 +54,7 @@ class _RegisterLabourState extends State<RegisterLabour> {
 
   //Labour labour = new Labour();
 
-  String value = 'None';
+  String workTypeValue = 'None';
   String districtValue = 'None';
   List<S2Choice<String>> options = [];
 
@@ -84,6 +85,9 @@ class _RegisterLabourState extends State<RegisterLabour> {
     return temp;
   }
 
+  bool marriedValue = false;
+  bool eobiValue = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +108,8 @@ class _RegisterLabourState extends State<RegisterLabour> {
                     child: ListTile(
                       title: Text("${lease.parties}"),
                       subtitle: Text(
-                          "${lease.code}\n(${lease.minerals})\nArea: ${area.name}"),
+                          "${lease.code}\n(${lease.minerals})\nArea: ${area
+                              .name}"),
                     ),
                   ),
                   Form(
@@ -118,34 +123,54 @@ class _RegisterLabourState extends State<RegisterLabour> {
                             icon: Icons.person),
                         dateField("Date of Birth", (date) => {doa.text = date}),
                         cellField("Cell Phone Primary", cell_no_primary),
-                        cellField("Cell Phone Secondary", cell_no_secondary),
+                        cellField("Cell Phone Secondary", cell_no_secondary,
+                            required: false),
                         //textField("Married", married, icon: Icons.person),
-                        marriedField(
-                            "Married",
-                            (data) => {
-                                  setState(() {
-                                    married.text = (data) ? "Yes" : "No";
-                                  })
-                                }),
+                        Row(
+                          children: [
+                            Text("Married"),
+                            Checkbox(
+                              checkColor: Colors.white,
+//    fillColor: MaterialStateProperty.resolveWith(getColor),
+                              value: marriedValue,
+                              onChanged: (bool? value) {
+                                marriedValue = value!;
+                                setState(() {
+                                  married.text = (marriedValue) ? "Yes" : "No";
+                                });
+                              },
+                            )
+                          ],
+                        ),
                         //textField("EOBI", eobi, icon: Icons.person),
-                        eobiField(
-                            "EOBI",
-                            (data) => {
-                                  setState(() {
-                                    eobi.text = (data) ? "Yes" : "No";
-                                  })
-                                }),
+                        Row(
+                          children: [
+                            Text("EOBI"),
+                            Checkbox(
+                              checkColor: Colors.white,
+                              value: eobiValue,
+                              onChanged: (bool? value) {
+                                eobiValue = value!;
+                                setState(() {
+                                  eobi.text = (value) ? "Yes" : "No";
+                                });
+                              },
+                            )
+                          ],
+                        ),
                         textField("EOBI No", eobi_no,
                             icon: Icons.person, required: false),
                         dateField("Work Start From",
-                            (date) => {work_start_from.text = date}),
+                                (date) => {work_start_from.text = date}),
                         SmartSelect<String>.single(
                             title: 'Work Type',
-                            selectedValue: value,
+                            selectedValue: workTypeValue,
                             choiceItems: getOptions(dataSnap.data),
-                            onChange: (state) => setState(() {
-                                  work_type.text = value;
-                                  value = state.value.toString();
+                            onChange: (state) =>
+                                setState(() {
+                                  print(state.value);
+                                  work_type.text = state.value.toString();
+                                  workTypeValue = state.value.toString();
                                 })),
                         textField("Permanent Address", perm_address,
                             icon: Icons.card_travel),
@@ -157,39 +182,82 @@ class _RegisterLabourState extends State<RegisterLabour> {
                                   title: 'District',
                                   selectedValue: districtValue,
                                   choiceItems: getDistricts(districtData.data),
-                                  onChange: (state) => setState(() {
-                                        perm_district.text = value;
-                                        print(perm_district.text);
-                                        value = state.value.toString();
+                                  onChange: (state) =>
+                                      setState(() {
+                                        perm_district.text =
+                                            state.value.toString();
+                                        districtValue = state.value.toString();
                                       }));
                             }),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               // Validate returns true if the form is valid, or false otherwise.
-
                               if (_formKey.currentState!.validate()) {
-                                if (work_type.text.isEmpty) {
+                                Labour labour = setLabour();
+                                Labour? temp = await labourService
+                                    .readByCNIC("${labour.cnic}");
+                                if (temp != null) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
+                                        backgroundColor: Colors.red,
                                         content:
-                                            Text('Please select Work Type')),
-                                  );
-                                }
-                                if (perm_district.text.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            'Please select Permananet District')),
+                                        Text('Labour Already Registered')),
                                   );
                                 } else {
-                                  Labour labour = setLabour();
-                                  labourService.create(labour);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Processing Data')),
-                                  );
+                                  if (work_type.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          backgroundColor: Colors.yellow,
+                                          content:
+                                          Text('Please select Work Type')),
+                                    );
+                                  }
+                                  if (perm_district.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          backgroundColor: Colors.yellow,
+                                          content: Text(
+                                              'Please select Permananet District')),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          duration: const Duration(seconds: 2),
+                                          content: Text('Processing Data')),
+                                    );
+                                    temp = await labourService.create(labour);
+                                    if (temp != null) {
+                                      Labour data = temp;
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            backgroundColor: Colors.green,
+                                            content: Text('Labour Registered')),
+                                      );
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LabourDetail(labour: data)))
+                                          .then((value) {
+                                        Navigator.pop(context);
+                                        Navigator.push(context, MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegisterLabour(
+                                                    lease: lease, area: area)));
+                                        //print("======================");
+                                        //_formKey.currentState?.reset();
+                                        //resetForm();
+                                      });
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text('Error')),
+                                      );
+                                    }
+                                  }
                                 }
                               }
                             },
@@ -208,6 +276,24 @@ class _RegisterLabourState extends State<RegisterLabour> {
     );
   }
 
+  void resetForm() {
+    name.text = "";
+    cnic.text = "";
+    father_name.text = "";
+    doa.text = "";
+    cell_no_primary.text = "";
+    cell_no_secondary.text = "";
+    married.text = "";
+    eobi.text = "";
+    eobi_no.text = "";
+    work_start_from.text = "";
+    work_type.text = "";
+    perm_address.text = "";
+    perm_district.text = "";
+    marriedValue = false;
+    eobiValue = false;
+  }
+
   Labour setLabour() {
     Map<String, dynamic> data = {};
     data['area_id'] = area.id;
@@ -215,7 +301,7 @@ class _RegisterLabourState extends State<RegisterLabour> {
     data['lease_code'] = area.lease_code;
     data['purpose'] = "labour";
     data['gender'] = "male";
-    data["createTime"] = DateTime.now();
+    data["createTime"] = DateTime.now().toIso8601String();
 
     if (!name.text.isEmpty) {
       data['name'] = name.text;
@@ -228,7 +314,7 @@ class _RegisterLabourState extends State<RegisterLabour> {
       data['father_name'] = father_name.text;
     }
     if (!doa.text.isEmpty) {
-      data['doa'] = DateTime.parse(doa.text);
+      data['doa'] = doa.text;
     }
     if (!cell_no_primary.text.isEmpty) {
       data['cell_no_primary'] = cell_no_primary.text.trim();
@@ -243,6 +329,8 @@ class _RegisterLabourState extends State<RegisterLabour> {
 
     if (!eobi.text.isEmpty) {
       data['eobi'] = eobi.text.trim();
+    } else {
+      data['eobi'] = "No";
     }
 
     if (!eobi_no.text.isEmpty) {
@@ -262,10 +350,11 @@ class _RegisterLabourState extends State<RegisterLabour> {
     }
 
     if (!perm_district.text.isEmpty) {
-      data['perm_district_name'] = district.text.trim();
+      print(perm_district.text);
+      data['perm_district_name'] = perm_district.text.trim();
       data['perm_district'] = 0;
     }
-
+    print(data);
     return Labour.fromJson(data);
   }
 }

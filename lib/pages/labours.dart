@@ -1,15 +1,15 @@
+import 'package:cmlw_labour_registration/pages/labour_detail.dart';
 import 'package:cmlw_labour_registration/services/labourServices.dart';
 import 'package:flutter/material.dart';
 
 class LaboursPage extends StatefulWidget {
-  LaboursPage ();
+  LaboursPage();
 
   @override
   _LaboursPageState createState() => _LaboursPageState();
 }
 
-class _LaboursPageState extends State<LaboursPage > {
-
+class _LaboursPageState extends State<LaboursPage> {
   LabourService labourService = new LabourService();
   late Future<List<dynamic>> labours = labourService.readAll();
   String value = "None";
@@ -24,10 +24,7 @@ class _LaboursPageState extends State<LaboursPage > {
     return Scaffold(
       appBar: AppBar(
         title: Text("Labours"),
-        actions: [
-          IconButton(onPressed: (){
-          }, icon: Icon(Icons.add))
-        ],
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.add))],
       ),
       body: FutureBuilder<List<dynamic>>(
         future: labours,
@@ -35,16 +32,21 @@ class _LaboursPageState extends State<LaboursPage > {
           print(dataSnap.data);
           if (dataSnap.hasData) {
             List<dynamic>? data = dataSnap.data as List;
-
-            if(data.length>0){
+            if (data.length > 0) {
               return ListView.builder(
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     return Card(
                       child: ListTile(
-                        onTap: () {},
-                        title: Text("${data[index].name}"),
-                        subtitle: Text("${data[index].lease_code}"),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      new LabourDetail(labour: data[index])));
+                        },
+                        title: Text("${data[index].name} s/o ${data[index].father_name}"),
+                        subtitle: Text("${data[index].cnic}"),
                         trailing: IconButton(
                             onPressed: () {
                               labourService.delete(data[index].id);
@@ -56,7 +58,7 @@ class _LaboursPageState extends State<LaboursPage > {
                       ),
                     );
                   });
-            }else{
+            } else {
               return Column(
                 children: [
                   Container(

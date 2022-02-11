@@ -8,10 +8,7 @@ class LabourService extends DB {
   Future<dynamic> create(dynamic table) async {
     final db = await DB.instance.database;
 
-    final json = table.toJson();
-    print(json);
     final id = await db.insert(tableLabour, table.toJson());
-print(id);
     return table.copy(id: id);
   }
 
@@ -31,6 +28,21 @@ print(id);
     }
   }
 
+  @override
+  Future<dynamic?> readByCNIC(String cnic) async {
+    final db = await DB.instance.database;
+
+    final maps = await db.query(tableLabour,
+        columns: LabourFields.values,
+        where: '${LabourFields.cnic}= ?',
+        whereArgs: [cnic]);
+    if (maps.isNotEmpty) {
+      return Labour.fromJson(maps.first);
+    } else {
+      return null;
+    }
+  }
+
   Future<List<dynamic>> readAll() async {
 
     final db = await DB.instance.database;
@@ -38,9 +50,41 @@ print(id);
     final orderBy = '${LabourFields.name} ASC';
 
     final result = await db.query(tableLabour,
-        columns: ["id", "name", "cnic", "father_name","cell_primary_no"],
         orderBy: orderBy);
-    return result.map((json) => Labour.fromJson(json)).toList();
+    return result.map((json){return Labour.fromJson(json);}).toList();
+  }
+
+  Future<List<List<dynamic>>> exportList() async {
+
+    final db = await DB.instance.database;
+
+    final orderBy = '${LabourFields.name} ASC';
+
+    final result = await db.query(tableLabour,
+        orderBy: orderBy);
+
+    return result.map((json){
+      return [
+        json["id"],
+        json["name"],
+        json["cnic"],
+        json["father_name"],
+        json["dob"],
+        json["cell_no_primary"],
+        json["cell_no_secondary"],
+        json["married"],
+        json["eobi"],
+        json["eobi_no"],
+        json["work_from"],
+        json["work_type"],
+        json["perm_address"],
+        json["perm_district_name"],
+        json["purpose"],
+        json["gender"],
+        json["area_name"],
+        json["lease_code"],
+        json["createTime"]
+      ];}).toList();
   }
 
   Future<List<dynamic>> readWhere(String condition) async {

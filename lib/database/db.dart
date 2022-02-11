@@ -7,6 +7,11 @@ import 'package:cmlw_labour_registration/models/lease.dart';
 import 'package:cmlw_labour_registration/models/work_type.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter/services.dart';
+import 'package:cmlw_labour_registration/services/districtServices.dart';
+import 'package:cmlw_labour_registration/services/leaseServices.dart';
+import 'package:cmlw_labour_registration/services/workTypeServices.dart';
+import 'package:csv/csv.dart';
 
 class DB {
 
@@ -105,6 +110,10 @@ class DB {
         '${WorkTypeFields.id} $idType,'
         '${WorkTypeFields.name} $textType NOT NULL)';
     await db.execute(sql);
+
+    syncDistrict();
+    syncWorkType();
+    syncMineralTitle();
   }
 
   Future createMineralTitleTable()async{
@@ -200,4 +209,67 @@ class DB {
     final db = await instance.database;
     db.close();
   }
+
+  Future<String> loadDistrictAsset() async {
+    return await rootBundle.loadString('assets/csv/districts.csv');
+  }
+
+  void syncDistrict() async
+  {
+    List<List<dynamic>> rows = const CsvToListConverter().convert(await loadDistrictAsset());
+    DistrictService service = new DistrictService();
+    rows.asMap().forEach((index,element) async {
+      if(index>0){
+        await service.create(District.fromJson({"id":element[0],"name":element[1],"province":element[1]}));
+      }
+    });
+  }
+
+  Future<String> loadMineralTitleAsset() async {
+    return await rootBundle.loadString('assets/csv/lease.csv');
+  }
+
+  void syncMineralTitle() async
+  {
+    List<List<dynamic>> rows = const CsvToListConverter().convert(await loadMineralTitleAsset()).toList();
+    print(rows.length);
+    LeaseService service = new LeaseService();
+    rows.asMap().forEach((index,element) async {
+      if(index>0){
+        Lease temp = await service.create(Lease.fromJson({
+          "code":element[0],
+          "parties":element[1],
+          "rsp_office":element[2],
+          "type_group":element[3],
+          "type":element[4],
+          "mineral_group":element[7],
+          "minerals":element[6],
+          "district":element[8],
+          "grant_date":element[9],
+          "expiry_date":element[10]
+        }));
+      }
+    });
+  }
+
+  Future<String> loadWorkTypeAsset() async {
+    return await rootBundle.loadString('assets/csv/work_types.csv');
+  }
+
+  void syncWorkType() async
+  {
+    List<List<dynamic>> rows = const CsvToListConverter().convert(await loadWorkTypeAsset()).toList();
+    WorkTypeService service = new WorkTypeService();
+    //print(await service.getTables());
+
+    rows.asMap().forEach((index,element) async {
+      if(index>0){
+        WorkType temp = await service.create(WorkType.fromJson({
+          "id":element[0],
+          "name":element[1]
+        }));
+      }
+    });
+  }
+
 }

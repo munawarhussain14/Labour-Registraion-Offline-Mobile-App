@@ -158,6 +158,7 @@ class Labour {
           createTime:createTime??this.createTime);
 
   factory Labour.fromJson(Map<String, dynamic> json) {
+
     return Labour(
         id: json["id"],
         purpose: json["purpose"],
@@ -191,8 +192,7 @@ class Labour {
     if (father_name != null) data['father_name'] = father_name;
     if (doa != null) data['doa'] = doa;
     if (cell_no_primary != null) data['cell_no_primary'] = cell_no_primary;
-    if (cell_no_secondary != null)
-      data['cell_no_secondary'] = cell_no_secondary;
+    if (cell_no_secondary != null) data['cell_no_secondary'] = cell_no_secondary;
     if (gender != null) data['gender'] = gender;
     if (married != null) data['married'] = married;
     if (eobi != null) data['eobi'] = eobi;

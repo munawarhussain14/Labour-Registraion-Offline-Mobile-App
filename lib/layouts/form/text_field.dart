@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
-Widget textField(String label, controller, {icon,required=true}) {
+Widget textField(String label, controller, {icon, required = true}) {
   return TextFormField(
     controller: controller,
-    // The validator receives the text that the user has entered.
+    textCapitalization: TextCapitalization.words,
+// The validator receives the text that the user has entered.
     decoration: InputDecoration(
-        // border: OutlineInputBorder(),
+// border: OutlineInputBorder(),
         label: Text("${label}"),
         icon: Icon(icon)),
     validator: (value) {
-      if (required&&(value == null || value.isEmpty)) {
+      if (required && (value == null || value.isEmpty)) {
         return 'Please enter Labour ${label}';
       }
       return null;
@@ -46,9 +47,9 @@ Widget cnicField(String label, controller) {
   );
 }
 
-Widget cellField(String label, controller) {
+Widget cellField(String label, controller, {icon, required = true}) {
   var maskFormatter = new MaskTextInputFormatter(
-      mask: '03##-#######',
+      mask: '####-#######',
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
 
@@ -56,17 +57,20 @@ Widget cellField(String label, controller) {
     controller: controller,
     keyboardType: TextInputType.number,
     inputFormatters: [maskFormatter],
-    // The validator receives the text that the user has entered.
+// The validator receives the text that the user has entered.
     decoration: InputDecoration(
-        // border: OutlineInputBorder(),
+// border: OutlineInputBorder(),
         label: Text("${label}"),
         hintText: "0300-0000000",
         icon: Icon(Icons.phone)),
     validator: (value) {
-      if (value == null || value.isEmpty) {
-        return 'Please enter Labour ${label}';
-      } else if (value.length < 12) {
-        return 'Invalid ${label}';
+      print(required);
+      if (required) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter Labour ${label}';
+        } else if (value.length < 12) {
+          return 'Invalid ${label}';
+        }
       }
       return null;
     },
@@ -91,7 +95,7 @@ Widget dateField(String label, inputValue) {
     onSaved: (val) => print(val),
   );
 }
-
+/*
 bool married = false;
 
 Widget marriedField(String label, inputData) {
@@ -128,4 +132,4 @@ Widget eobiField(String label, inputData) {
       )
     ],
   );
-}
+}*/

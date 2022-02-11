@@ -224,4 +224,6 @@ class _SyncState extends State<Sync> {
     WorkTypeService service = new WorkTypeService();
     service.deleteAll();
   }
+
+
 }
