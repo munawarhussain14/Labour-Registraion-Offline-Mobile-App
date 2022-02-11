@@ -14,17 +14,69 @@ class _LaboursPageState extends State<LaboursPage> {
   late Future<List<dynamic>> labours = labourService.readAll();
   String value = "None";
 
+  Icon customIcon = const Icon(Icons.search);
+  Widget customSearchBar = const Text('Select Mineral Title');
+
   @override
   void initState() {
     super.initState();
+    customSearchBar = Text("Labours");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Labours"),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.add))],
+        title: customSearchBar,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (customIcon.icon == Icons.search) {
+                  customIcon = const Icon(Icons.cancel);
+                  customSearchBar = ListTile(
+                    leading: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    title: TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          if(value!=""){
+                            labours = labourService.readWhere(value);
+                          }
+
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Type to search...',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                } else if (customIcon.icon == Icons.cancel) {
+                  customSearchBar = Text("Labours");
+                  customIcon = const Icon(Icons.search);
+                  setState(() {
+                    labours = labourService.readAll();
+                  });
+                }
+              });
+            },
+            icon: customIcon,
+          )
+        ],
+        centerTitle: true,
       ),
       body: FutureBuilder<List<dynamic>>(
         future: labours,
@@ -45,7 +97,8 @@ class _LaboursPageState extends State<LaboursPage> {
                                   builder: (context) =>
                                       new LabourDetail(labour: data[index])));
                         },
-                        title: Text("${data[index].name} s/o ${data[index].father_name}"),
+                        title: Text(
+                            "${data[index].name} s/o ${data[index].father_name}"),
                         subtitle: Text("${data[index].cnic}"),
                         trailing: IconButton(
                             onPressed: () {

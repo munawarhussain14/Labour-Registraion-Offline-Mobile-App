@@ -44,32 +44,30 @@ class LabourService extends DB {
   }
 
   Future<List<dynamic>> readAll() async {
-
     final db = await DB.instance.database;
 
     final orderBy = '${LabourFields.name} ASC';
 
-    final result = await db.query(tableLabour,
-        orderBy: orderBy);
-    return result.map((json){return Labour.fromJson(json);}).toList();
+    final result = await db.query(tableLabour, orderBy: orderBy);
+    return result.map((json) {
+      return Labour.fromJson(json);
+    }).toList();
   }
 
   Future<List<List<dynamic>>> exportList() async {
-
     final db = await DB.instance.database;
 
     final orderBy = '${LabourFields.name} ASC';
 
-    final result = await db.query(tableLabour,
-        orderBy: orderBy);
+    final result = await db.query(tableLabour, orderBy: orderBy);
 
-    return result.map((json){
+    return result.map((json) {
       return [
         json["id"],
         json["name"],
         json["cnic"],
         json["father_name"],
-        json["dob"],
+        json["doa"],
         json["cell_no_primary"],
         json["cell_no_secondary"],
         json["married"],
@@ -84,16 +82,17 @@ class LabourService extends DB {
         json["area_name"],
         json["lease_code"],
         json["createTime"]
-      ];}).toList();
+      ];
+    }).toList();
   }
 
-  Future<List<dynamic>> readWhere(String condition) async {
-
+  Future<List<dynamic>> readWhere(String keyword) async {
     final db = await DB.instance.database;
 
     final orderBy = '${LabourFields.name} ASC';
 
-    final result = await db.query(tableLabour,where: condition, orderBy: orderBy);
+    final result = await db.rawQuery(
+        "select * from ${tableLabour} where name like '%${keyword}%' or father_name like '%${keyword}%' or cnic like '%${keyword}%'");
 
     return result.map((json) => Labour.fromJson(json)).toList();
   }
@@ -114,7 +113,7 @@ class LabourService extends DB {
   Future<int> delete(int id) async {
     final db = await DB.instance.database;
 
-    return await db.delete(tableLabour,
-        where: '${LabourFields.id}= ?', whereArgs: [id]);
+    return await db
+        .delete(tableLabour, where: '${LabourFields.id}= ?', whereArgs: [id]);
   }
 }
