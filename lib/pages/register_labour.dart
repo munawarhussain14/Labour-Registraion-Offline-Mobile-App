@@ -177,7 +177,6 @@ class _RegisterLabourState extends State<RegisterLabour> {
                         FutureBuilder(
                             future: districts,
                             builder: (context, districtData) {
-//                              print(districtData.data);
                               return SmartSelect<String>.single(
                                   title: 'District',
                                   selectedValue: districtValue,
@@ -206,20 +205,36 @@ class _RegisterLabourState extends State<RegisterLabour> {
                                         Text('Labour Already Registered')),
                                   );
                                 } else {
+                                  if (doa.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          backgroundColor: Colors.orangeAccent,
+                                          content:
+                                          Text('Please select Date of Birth')),
+                                    );
+                                  }else
+                                  if (work_start_from.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          backgroundColor: Colors.orangeAccent,
+                                          content:
+                                          Text('Please select work Start Date')),
+                                    );
+                                  }else
                                   if (work_type.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                          backgroundColor: Colors.yellow,
+                                          backgroundColor: Colors.orangeAccent,
                                           content:
                                           Text('Please select Work Type')),
                                     );
                                   }
-                                  if (perm_district.text.isEmpty) {
+                                  else if (perm_district.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                          backgroundColor: Colors.yellow,
+                                          backgroundColor: Colors.orangeAccent,
                                           content: Text(
-                                              'Please select Permananet District')),
+                                              'Please select Permanent District')),
                                     );
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -325,6 +340,8 @@ class _RegisterLabourState extends State<RegisterLabour> {
 
     if (!married.text.isEmpty) {
       data['married'] = married.text.trim();
+    }else {
+      data['married'] = "No";
     }
 
     if (!eobi.text.isEmpty) {

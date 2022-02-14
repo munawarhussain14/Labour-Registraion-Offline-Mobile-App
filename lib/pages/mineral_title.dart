@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cmlw_labour_registration/pages/areas.dart';
 import 'package:cmlw_labour_registration/services/leaseServices.dart';
 import "package:flutter/material.dart";
@@ -29,7 +27,7 @@ class _MineralTitlePageState extends State<MineralTitlePage> {
   @override
   void initState() {
     super.initState();
-    customSearchBar = Text("${district} District");
+    customSearchBar = Text("District ${district}");
   }
 
   @override
@@ -71,7 +69,7 @@ class _MineralTitlePageState extends State<MineralTitlePage> {
                     ),
                   );
                 }else if (customIcon.icon == Icons.cancel){
-                  customSearchBar = Text("${district} District");
+                  customSearchBar = Text("District ${district}");
                   customIcon = const Icon(Icons.search);
                   setState(() {
                     districts = service.getByDistrict("",district);

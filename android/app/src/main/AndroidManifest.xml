@@ -3,9 +3,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
    <application
-        android:label="cmlw_labour_registration"
+        android:label="CMLW Labour Registration"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launch_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

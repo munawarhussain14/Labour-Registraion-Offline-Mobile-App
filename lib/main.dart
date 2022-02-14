@@ -83,29 +83,31 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
+      body: SingleChildScrollView(
+        child: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
 //            getTile("Labours Registered: 200",()=>{}),
-            getTile("Register Labour",()=>{
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>DistrictPage()))
-            }),
-            getTile("Registered Labours",()=>{
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>LaboursPage()))
-            }),
-            getTile("Export Labour CSV File",()async{
-              LabourService labourService = new LabourService();
-              List<List<dynamic>> list = await labourService.exportList();
-              //print(list);
-              getCsv(list);
-              //String csv = const ListToCsvConverter().convert([["Munawar","Aman","Usama"],["CO","Sub Engr","CO"]]);
-              //print(csv.runtimeType);
-              //Navigator.push(context, MaterialPageRoute(builder: (context)=>const Sync()))
-            })
-          ],
+              getTile("REGISTER LABOUR",()=>{
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>DistrictPage()))
+              }),
+              getTile("ALL LABOURS",()=>{
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>LaboursPage()))
+              },color:Colors.orange),
+              getTile("EXPORT CSV FILES",()async{
+                LabourService labourService = new LabourService();
+                List<List<dynamic>> list = await labourService.exportList();
+                //print(list);
+                getCsv(list);
+                //String csv = const ListToCsvConverter().convert([["Munawar","Aman","Usama"],["CO","Sub Engr","CO"]]);
+                //print(csv.runtimeType);
+                //Navigator.push(context, MaterialPageRoute(builder: (context)=>const Sync()))
+              },color:Colors.green)
+            ],
+          ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

@@ -1,10 +1,10 @@
-# cmlw_labour_registration
+# CMLW
 
 Labour Registration Offline Application
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is develop to ease the Site staff for registering the labours offline on their mobile then upload it online
 
 A few resources to get you started if this is your first Flutter project:
 
